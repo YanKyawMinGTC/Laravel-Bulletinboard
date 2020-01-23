@@ -39,16 +39,15 @@
      </thead>
      <tbody> @foreach($users as $user) <tr>
          <td>{{$user->id}}</td>
-
          <td>
            <button type="button" class="btn btn-link" data-toggle="modal" data-id="{{ $user->id }}"
              data-name="{{ $user->name }}" data-email="{{$user->email}}" data-phone="{{ $user->phone }}"
              data-dob="{{$user->dob}}" data-address="{{$user->address}}" data-created_at="{{$user->created_at}}"
-             data-created_user="{{$user->created_user}}" data-updated_at="{{$user->updated_at}}"
+             data-created_user="{{$user->created_user_name}}" data-updated_at="{{$user->updated_at}}"
              data-updated_user="{{$user->updated_user}}" data-target="#userModal">{{$user->name}}</button>
          </td>
          <td>{{$user->email}}</td>
-         <td>{{$user->create_user_id}}</td>
+         <td>{{$user->created_user_name}}</td>
          <td>{{$user->phone}}</td>
          <td>{{$user->dob}}</td>
          <td>{{$user->created_at}}</td>

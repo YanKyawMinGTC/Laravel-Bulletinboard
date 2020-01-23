@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Auth;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -14,7 +13,6 @@ class RegisterController extends Controller
     public function index()
     {
         $users = User::paginate(10);
-        dd($users);
         return view("user.user_list", compact("users"));
     }
     /*
@@ -53,42 +51,4 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:3', 'confirmed'],
-            'type' => ['required'],
-            'phone' => ['required', 'max:20'],
-            'dob' => ['required'],
-            'address' => ['required', 'string', 'max:255'],
-            'profile' => ['required'],
-        ]);
-    }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        // dd($data);
-        return User::create([
-            'name01' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'profile' => $data['profile'],
-            'type' => $data['type'],
-            'phone' => $data['phone'],
-            'address' => $data['address'],
-            'create_user_id' => $data['name'],
-            'updated_user_id' => $data['name'],
-            'deleted_user_id' => $data['name'],
-            'deleted_at' => now(),
-        ]);
-    }
-
 }

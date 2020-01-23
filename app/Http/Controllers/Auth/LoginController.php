@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
@@ -36,16 +35,20 @@ class LoginController extends Controller
         ]);
 
         $remember_me = $request->has('remember_me') ? true : false;
-
         if (auth()->attempt(['email' => $request->input('email'), 'password' => $request->input('password')], $remember_me)) {
             $user = auth()->user();
         } else {
             return back()->with('error', 'your username and password are wrong.');
-        }
-
+        };
     }
-
-    protected $redirectTo = RouteServiceProvider::User;
+    protected function authenticated(Request $request)
+    {
+        if (auth()->user()->type == 0) {
+            return redirect('/users');
+        } else if (auth()->user()->type == 1) {
+            return redirect(route('users.show', auth()->user()->id));
+        }
+    }
     /**
      * Create a new controller instance.
      *

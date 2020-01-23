@@ -13,6 +13,13 @@
 Route::get('/', function () {
     return view('auth/login');
 });
+Route::get('/user/create_user', function () {
+    return view('user/create_user');
+});
+Route::get('/post/create_post', function () {
+    return view('post/create_post');
+});
+
 Auth::routes();
 
 Route::resource("posts", "Post\PostController");

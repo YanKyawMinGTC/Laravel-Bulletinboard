@@ -6,8 +6,6 @@ var loadFile = function (event) {
 };
 // for clear btn to change default img
 function resetimg() {
-    var input_value = document.getElementById("nameid");
-    input_value.innerText = "asdfd";
     images[0].src = "/image/default_img.png";
     images[1].src = "/image/default_img.png";
 }

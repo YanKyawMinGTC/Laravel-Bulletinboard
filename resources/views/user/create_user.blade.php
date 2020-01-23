@@ -4,7 +4,7 @@
       <div class="card">
         <div class="card-header">Create User</div>
         <div class="card-body">
-          <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data"> @csrf <div
+          <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data"> @csrf <div
               class="form-group row">
               <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
               <div class="col-md-6">
@@ -35,11 +35,8 @@
             <div class="form-group row">
               <label for="confirm-password" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
               <div class="col-md-6">
-                <input id="confirm-password" type="password" class="form-control @error('name') is-invalid @enderror"
-                  name="password_confirmation" autocomplete="new-password"> @error('password') <span
-                  class="invalid-feedback" role="alert" autofocus>
-                  <strong>{{ $message }}</strong>
-                </span> @enderror </div>
+                <input id="confirm-password" type="password" class="form-control" name="password_confirmation"
+                  autocomplete="new-password"></div>
             </div>
             <!-- // for only admin -->
             <div class="form-group row">
@@ -81,12 +78,11 @@
             <div class="form-group row">
               <label for="profile" class="col-md-4 col-form-label text-md-right">Profile</label>
               <div class="col-md-6">
-                <input id="profile" type="file" onchange="loadFile(event)"
-                  class="form-control mb-3 @error('profile') is-invalid @enderror" name="profile"
-                  value="{{ old('profile') }}" autocomplete="profile"> @error('profile') <span class="invalid-feedback"
-                  role="alert">
+                <input id="profile" type="file" class="form-control mb-3 @error('profile') is-invalid @enderror"
+                  name="profile" autocomplete="profile" value="{{ old('profile') }}" onchange="loadFile(event)">
+                @error('profile') <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
-                </span> @enderror <img src="/image/default_img.png" id="output" width="200"> </div>
+                </span> @enderror <img src="/image/default_img.png" class="default_img" width="200"> </div>
             </div>
             <div class="form-group row mb-0 ">
               <div class="col-md-6 mx-auto">

@@ -11,7 +11,7 @@ return [
     | the validator class. Some of these rules have multiple versions such
     | as the size rules. Feel free to tweak each of these messages here.
     |
-    */
+     */
 
     'accepted' => 'The :attribute must be accepted.',
     'active_url' => 'The :attribute is not a valid URL.',
@@ -30,7 +30,7 @@ return [
         'array' => 'The :attribute must have between :min and :max items.',
     ],
     'boolean' => 'The :attribute field must be true or false.',
-    'confirmed' => 'The :attribute confirmation does not match.',
+    'confirmed' => 'The :attribute and confirm password must be same.',
     'date' => 'The :attribute is not a valid date.',
     'date_equals' => 'The :attribute must be a date equal to :date.',
     'date_format' => 'The :attribute does not match the format :format.',
@@ -43,6 +43,7 @@ return [
     'ends_with' => 'The :attribute must end with one of the following: :values',
     'exists' => 'The selected :attribute is invalid.',
     'file' => 'The :attribute must be a file.',
+    'profile' => 'The :attribute must be a jpg,png.',
     'filled' => 'The :attribute field must have a value.',
     'gt' => [
         'numeric' => 'The :attribute must be greater than :value.',
@@ -95,7 +96,7 @@ return [
     'numeric' => 'The :attribute must be a number.',
     'password' => 'The password is incorrect.',
     'present' => 'The :attribute field must be present.',
-    'regex' => 'The :attribute format is invalid.',
+    'regex' => 'The :attribute must be more than 8 characters long, must contain at least 1 Uppercase and 1 Numeric.',
     'required' => 'The :attribute field is required.',
     'required_if' => 'The :attribute field is required when :other is :value.',
     'required_unless' => 'The :attribute field is required unless :other is in :values.',
@@ -127,7 +128,7 @@ return [
     | convention "attribute.rule" to name the lines. This makes it quick to
     | specify a specific custom language line for a given attribute rule.
     |
-    */
+     */
 
     'custom' => [
         'attribute-name' => [
@@ -144,7 +145,7 @@ return [
     | with something more reader friendly such as "E-Mail Address" instead
     | of "email". This simply helps us make our message more expressive.
     |
-    */
+     */
 
     'attributes' => [],
 

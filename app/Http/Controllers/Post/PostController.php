@@ -64,6 +64,7 @@ class PostController extends Controller
         ]);
         $user = Post::create([
             'title' => $VData['title'],
+
             'description' => $VData['description'],
             'created_at' => now(),
             "create_user_id" => auth()->user()->id,
