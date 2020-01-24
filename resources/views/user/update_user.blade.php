@@ -64,10 +64,16 @@
                   </span> @enderror </div>
               </div>
               <div class="d-flex justify-content-center">
+               @if(file_exists(public_path().'/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}'))
                 <img src="/profile_img/{{$users->id}}/image/{{$users->profile}}" class="default_img"
-                  alt="{{$users->profile}}" width="200"></div>
+                  alt="{{$users->profile}}" width="200">
+                  @else
+                   <img src="/image/default_img.png" class="default_img"
+                  alt="default_img.png" width="200">
+                  @endif
+                  </div>
               <div class="d-flex justify-content-start mb-5 ml-5">
-                <a href="#">Change Password</a>
+                <a href="{{ route('users.change_password',$users->id) }}">Change Password</a>
               </div>
               <div class="form-group row mb-0 ">
                 <div class="col-md-6 mx-auto">
@@ -79,8 +85,13 @@
           </div>
           <div class="form-group col-md-2">
             <div class="mt-5 mr-5 w-100 ">
+             @if(file_exists(public_path().'/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}'))
               <img src="/profile_img/{{$users->id}}/image/{{$users->profile}}" class="default_img"
                 alt="{{$users->profile}}" style="width:100%;">
+                @else
+                <img src="/image/default_img.png" class="default_img"
+                alt="default_img" style="width:100%;">
+                @endif
             </div>
           </div>
         </div>

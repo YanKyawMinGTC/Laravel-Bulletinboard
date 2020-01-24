@@ -23,8 +23,12 @@ Route::get('/post/create_post', function () {
 Auth::routes();
 
 Route::resource("posts", "Post\PostController");
+
+Route::get('users/{$id}', 'User\UserController@change_password')->name('users.change_password');
 Route::resource("users", "User\UserController");
-Route::any('/search', "Post\SearchController@index");
+
+Route::post('/search_post', "Post\SearchController@post_search");
+Route::post('/search_user', "Post\SearchController@user_search");
 
 Route::post('import', 'Post\FileController@import')->name('import');
 Route::get('export', 'Post\FileController@export')->name('export');

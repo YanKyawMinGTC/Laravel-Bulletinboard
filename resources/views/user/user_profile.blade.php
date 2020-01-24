@@ -2,7 +2,7 @@
   <div class="row justify-content-center">
     <div class="col-md-12">
       <div class="card">
-        <div class="card-header">User Profile</div> @if (auth()->user()->type == 1) <div
+        <div class="card-header">User Profile</div> @if (Auth::user()->id == $user_prof['id']) <div
           class="d-inline-flex justify-content-center mt-5 mb-5">
           <a href="{{ route('users.edit', Auth::user()->id) }}" class="text-center btn btn-primary">Edit</a>
         </div> @endif <div class="row">
@@ -50,9 +50,9 @@
           </div>
           <div class="form-group col-md-4">
             <div class="mt-5">
-              <img src="/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}" alt="{{$user_prof->profile}}"
-                class="w-50">
-            </div>
+              @if(file_exists(public_path().'/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}')) <img
+                src="/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}" alt="{{$user_prof->profile}}"
+                class="w-50"> @else <img src="/image/default_img.png" alt="default_img.png" class="w-50"> @endif </div>
           </div>
         </div>
       </div>

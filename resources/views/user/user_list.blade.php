@@ -1,23 +1,25 @@
  @extends('layouts.app') @section('content') <div class="container">
    <div class="title">
-     <h2>User List</h2>
+     <h2><a href="/users">User List</a></h2>
    </div>
    <div class="row  mb-5">
-     <div class="col-2">
-       <input type="text" class="w-100 p-1" placeholder="Enter Name">
-     </div>
-     <div class="col-2">
-       <input type="text" class="w-100 p-1" placeholder="Enter Email">
-     </div>
-     <div class="col-2">
-       <input type="text" class="w-100 p-1" placeholder="Created From">
-     </div>
-     <div class="col-2">
-       <input type="text" class="w-100 p-1" placeholder="Created To">
-     </div>
-     <div class="col-2">
-       <button class="btn btn-primary w-50 ml-5">Search</button>
-     </div>
+     <form action="/search_user" method="POST" role="search"> {{ csrf_field() }} <div class="input-group">
+         <div class="col-2">
+           <input type="text" class="w-100 p-1" name="name" placeholder="Enter Name">
+         </div>
+         <div class="col-2">
+           <input type="text" class="w-100 p-1" name="email" placeholder="Enter Email">
+         </div>
+         <div class="col-2">
+           <input type="date" class="w-100 p-1" name="created_from" placeholder="Created From">
+         </div>
+         <div class="col-2">
+           <input type="date" class="w-100 p-1" name="created_to" placeholder="Created To">
+         </div>
+         <div class="col-2">
+           <button type="submit" class="btn btn-primary w-50 ml-5">Search</button>
+         </div>
+     </form>
      <div class="col-2">
        <a href="/user/create_user" title="user create">
          <button class="btn btn-primary">Add</button>
@@ -27,7 +29,7 @@
    <table class="table table-striped">
      <thead>
        <tr>
-           <th scope="col">ID</th>
+         <th scope="col">ID</th>
          <th scope="col">Name</th>
          <th scope="col">Email</th>
          <th scope="col">Created User</th>
@@ -37,7 +39,8 @@
          <th scope="col">Delete</th>
        </tr>
      </thead>
-     <tbody> @foreach($users as $user) <tr>
+     <tbody> @if(isset($users)) @if(isset($query))<p> The Search results for your query <b> {{ $query }} </b> are : </p>
+       @foreach($users as $user) <tr>
          <td>{{$user->id}}</td>
          <td>
            <button type="button" class="btn btn-link" data-toggle="modal" data-id="{{ $user->id }}"
@@ -56,7 +59,28 @@
                type="submit" onclick="return confirm('Are you sure?');" class="btn btn-danger btn-sm">Delete</button>
            </form>
          </td>
-       </tr> @endforeach </tbody>
+       </tr> @endforeach @elseif(!isset($query)) @foreach($users as $user) <tr>
+         <td>{{$user->id}}</td>
+         <td>
+           <button type="button" class="btn btn-link" data-toggle="modal" data-id="{{ $user->id }}"
+             data-name="{{ $user->name }}" data-email="{{$user->email}}" data-phone="{{ $user->phone }}"
+             data-dob="{{$user->dob}}" data-address="{{$user->address}}" data-created_at="{{$user->created_at}}"
+             data-created_user="{{$user->created_user_name}}" data-updated_at="{{$user->updated_at}}"
+             data-updated_user="{{$user->updated_user}}" data-target="#userModal">{{$user->name}}</button>
+         </td>
+         <td>{{$user->email}}</td>
+         <td>{{$user->created_user_name}}</td>
+         <td>{{$user->phone}}</td>
+         <td>{{$user->dob}}</td>
+         <td>{{$user->created_at}}</td>
+         <td>
+           <form method="post" action="{{ route('users.destroy', $user->id) }}"> @method('delete') @csrf <button
+               type="submit" onclick="return confirm('Are you sure?');" class="btn btn-danger btn-sm">Delete</button>
+           </form>
+         </td>
+       </tr> @endforeach @endif @else @if(isset($query)) <p> The Search results for your query <b> {{ $query }} </b> are
+         : <td colspan="7"> {{$message}}</td> @elseif(!isset($query)) <td colspan="7"> {{$message}}</td> @endif @endif
+     </tbody>
    </table>
  </div> @endsection <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
    <div class="modal-dialog" role="document">
@@ -75,7 +99,7 @@
            </div>
            <div class="form-group">
              <label for="modal_email" class="col-form-label">Email:</label>
-             <input type="email" class="form-control" id="modal_email"  disabled>
+             <input type="email" class="form-control" id="modal_email" disabled>
            </div>
            <div class="form-group">
              <label for="modal_phone" class="col-form-label">Phone:</label>

@@ -129,8 +129,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        // dd($user);
-        if (auth()->user()->type == 1) {
+        if (auth()->user()->type == 1 || auth()->user()->type == 0) {
             return view("user.update_user")->with('users', $user);
         } else {
             return redirect('/posts')->with('error', 'Unauthorized Page');
@@ -199,5 +198,11 @@ class UserController extends Controller
         $user_id = User::findOrFail($id);
         $user_id->delete();
         return redirect()->route("users.index");
+    }
+    public function change_password($id)
+    {
+        dd($id);
+        $user = User::find($id);
+        return view("user.change_password");
     }
 }

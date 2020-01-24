@@ -4,8 +4,8 @@
    </div>
    <div class="row  mb-5">
      <div class="col-4">
-       <form action="/search" method="POST" role="search"> {{ csrf_field() }} <div class="input-group">
-           <input type="text" class="form-control" name="search_keyword" placeholder="Search users"> <span
+       <form action="/search_post" method="POST" role="search"> {{ csrf_field() }} <div class="input-group">
+           <input type="text" class="form-control" name="search_keyword" placeholder="Search Post"> <span
              class="input-group-btn">
              <button type="submit" class="btn btn-primary">
                <span class="glyphicon glyphicon-search ">Search</span>
@@ -65,7 +65,7 @@
              @elseif($po->status==1) data-status="Active" @endif data-created_at="{{$po->created_at}}"
              data-created_user="{{ $po->user->name}}" data-updated_at="{{$po->updated_at}}"
              data-updated_user="{{ $po->user->name}}" data-target="#favoritesModal">{{$po->title}}</button></td>
-         <td colspan='3' >{{ $po->description}}</td>
+         <td colspan='3'>{{ $po->description}}</td>
          <td>{{$po->user->name}}</td>
          <td>{{ $po->created_at}}</td>
          <td><a href="{{ route('posts.edit', $po->id) }}" class="btn btn-secondary btn-sm">Edit</a></td>
@@ -75,7 +75,8 @@
            </form>
          </td>
        </tr> @endforeach @endif @else @if(isset($query)) <p> The Search results for your query <b> {{ $query }} </b> are
-         : @elseif(!isset($query)) <td colspan="7"> {{"message"}}</td> @endif @endif </tbody>
+         : <td colspan="7"> {{$message}}</td> @elseif(!isset($query)) <td colspan="7"> {{$message}}</td> @endif @endif
+     </tbody>
    </table>
  </div> @endsection <div class="modal fade" id="favoritesModal" tabindex="-1" role="dialog"
    aria-labelledby="favoritesModalLabel">
