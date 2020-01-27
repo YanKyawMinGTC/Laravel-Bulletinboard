@@ -4,7 +4,7 @@
       <div class="card">
         <div class="card-header">Create User</div>
         <div class="card-body">
-          <form method="POST" action="{{ route('users.store') }}" enctype="multipart/form-data"> @csrf <div
+          <form method="POST" action="{{ route('users.confirm_create') }}" enctype="multipart/form-data"> @csrf <div
               class="form-group row">
               <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
               <div class="col-md-6">

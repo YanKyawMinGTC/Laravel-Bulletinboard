@@ -16,7 +16,7 @@ class SearchController extends Controller
         $user_type = auth()->user()->type;
         $user_id = auth()->user()->id;
         if ($q == "") {
-            return view('post/post_list')->withQuery($q)->withMessage("Please...enter your title or description or Posted User !");
+            return view('post/post_list')->withQuery($q)->withMessage("Please...enter your title, description or Posted User !");
         } else {
             if ($user_type == 0) {
                 $post = User::join('posts', 'posts.create_user_id', 'users.id')
@@ -25,8 +25,7 @@ class SearchController extends Controller
                 $posts = Post::where('title', 'like', '%' . $q . '%')
                     ->orwhere('description', 'like', '%' . $q . '%')
                     ->orwhere('create_user_id', 'like', '%' . $post . '%')
-                    ->latest()
-                    ->paginate(10)
+                    ->paginate(100)
                     ->withPath('?search=' . $q);
                 if (count($posts) > 0) {
                     return view('post/post_list')->with("posts", $posts)->withQuery($q);
@@ -34,10 +33,7 @@ class SearchController extends Controller
                     return view('post/post_list')->withQuery($q)->withMessage("No Search Details found. Try to search again !");
                 }
             } elseif ($user_type == 1) {
-                // $user_only = User::find($user_id);
-                // $user_post = $user_only->post()->get();
-
-                $user = Post::where('title', 'LIKE', '%' . $q . '%')->orWhere('description', 'LIKE', '%' . $q . '%')->paginate(10);
+                $user = Post::where('id', 'LIKE', '%' . $user_id . '%')->where('title', 'LIKE', '%' . $q . '%')->orWhere('description', 'LIKE', '%' . $q . '%')->paginate(10);
                 if (count($user) > 0) {
                     return view('post/post_list')->with("posts", $user)->withQuery($q);
                 } else {

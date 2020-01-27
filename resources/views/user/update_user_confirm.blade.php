@@ -4,42 +4,50 @@
       <div class="card">
         <div class="card-header">Update User Confirm</div>
         <div class="row">
-          <div class="card-body col-md-8">
-            <form method="POST" action="{{ route('register') }}"> @csrf <div class="form-group row">
+          <div class="card-body col-md-12">
+            <form method="POST" action="{{ route('users.update',$user_id) }}"> @csrf @method('PATCH')
+
+              <div class="form-group col-md-4">
+                <div class="mt-5">
+                  <input type="text" name="profile" value="@if(file_exists("public_path()/profile_img/{{$user_id}}/image/{{$file_name}}")){{$file_name}}@else /image/default_img.png @endif" hidden>
+                      <img src="@if(file_exists("public_path()/profile_img/{{$user_id}}/image/{{$file_name}}"))/profile_img/{{$user_id}}/image/{{$file_name}}@else /image/default_img.png @endif" alt="default_img" class="w-50">
+                </div>
+              </div>
+              <div class="form-group row">
                 <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
                 <div class="col-md-6">
-                  <input id="name" type="text" class="form-control" name="name" disabled></div>
+                <input id="name" type="text" class="form-control" name="name" value="{{$user_detail['name']}}" readonly></div>
               </div>
               <div class="form-group row">
                 <label for="email" class="col-md-4 col-form-label text-md-right">Email Address</label>
                 <div class="col-md-6">
-                  <input id="email" type="email" class="form-control" name="email"
-                    autocomplete="email" disabled></div>
+                  <input id="email" type="email" class="form-control" name="email" value="{{$user_detail['email']}}"
+                    autocomplete="email" readonly></div>
               </div>
               <!-- // for only admin -->
               <div class="form-group row">
                 <label for="type" class="col-md-4 col-form-label text-md-right">Type</label>
                 <div class="col-md-6">
-                    <input class="form-control" type="text" value="User" disabled>
+                    <input class="form-control" type="text" name="type" value="@if($user_detail['type']==0)Admin @else User @endif" readonly>
                 </div>
               </div>
               <div class="form-group row">
                 <label for="phone" class="col-md-4 col-form-label text-md-right">Phone</label>
                 <div class="col-md-6">
-                  <input id="phone" type="phone" class="form-control" name="phone" autocomplete="phone" disabled>
+                  <input id="phone" type="phone" class="form-control" name="phone" value="{{$user_detail['phone']}}" autocomplete="phone" readonly>
                 </div>
               </div>
               <div class="form-group row">
                 <label for="dob" class="col-md-4 col-form-label text-md-right">Date Of Birth</label>
                 <div class="col-md-6">
-                  <input id="dob" type="date" class="form-control" name="dob" autocomplete="dob" disabled>
+                  <input id="dob" type="date" class="form-control" name="dob" value="{{$user_detail['dob']}}" autocomplete="dob" readonly>
                 </div>
               </div>
               <div class="form-group row">
-                <label for="address" class="col-md-4 col-form-label text-md-right">Date Of Birth</label>
+                <label for="address" class="col-md-4 col-form-label text-md-right">Address</label>
                 <div class="col-md-6">
                   <textarea name="address" id="address" class="form-control"
-                    style="width:100%;height:200px;resize:none" disabled></textarea>
+                    style="width:100%;height:200px;resize:none" readonly>{{$user_detail['address']}}</textarea>
                 </div>
               </div>
               <div class="form-group row mb-0 ">
@@ -49,11 +57,6 @@
                 </div>
               </div>
             </form>
-          </div>
-          <div class="form-group col-md-4">
-            <div class="mt-5">
-              <img src="/image/default_img.png" alt="dog img" class="w-50 ">
-            </div>
           </div>
         </div>
       </div>

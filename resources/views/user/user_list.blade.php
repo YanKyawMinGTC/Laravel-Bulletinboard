@@ -21,8 +21,8 @@
          </div>
      </form>
      <div class="col-2">
-       <a href="/user/create_user" title="user create">
-         <button class="btn btn-primary">Add</button>
+       <a href="/user/create_user" title="user create" class="btn btn-primary">
+        Add
        </a>
      </div>
    </div>

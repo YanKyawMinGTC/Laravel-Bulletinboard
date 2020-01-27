@@ -11,48 +11,48 @@
                 <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
                 <div class="col-md-6">
                   <input id="name" type="text" class="form-control " name="name" value="{{$user_prof['name']}}"
-                    disabled></div>
+                    readonly></div>
               </div>
               <div class="form-group row">
                 <label for="email" class="col-md-4 col-form-label text-md-right">Email Address</label>
                 <div class="col-md-6">
                   <input id="email" type="email" class="form-control" name="email" value="{{$user_prof['email']}}"
-                    disabled></div>
+                    readonly></div>
               </div>
               <!-- // for only admin -->
               <div class="form-group row">
                 <label for="type" class="col-md-4 col-form-label text-md-right">Type</label>
                 <div class="col-md-6"> @if($user_prof['type']== 0) <input type="text" name="type" id="type"
-                    value="Admin" class="p-2 form-control" disabled> @else <input type="text" name="type" id="type"
-                    value="User" class="p-2 form-control" disabled> @endif </div>
+                    value="Admin" class="p-2 form-control" readonly> @else <input type="text" name="type" id="type"
+                    value="User" class="p-2 form-control" readonly> @endif </div>
               </div>
               <div class="form-group row">
                 <label for="phone" class="col-md-4 col-form-label text-md-right">Phone</label>
                 <div class="col-md-6">
                   <input id="phone" type="phone" class="form-control" name="phone" value="{{$user_prof['phone']}}"
-                    disabled>
+                    readonly>
                 </div>
               </div>
               <div class="form-group row">
                 <label for="dob" class="col-md-4 col-form-label text-md-right">Date Of Birth</label>
                 <div class="col-md-6">
-                  <input id="dob" type="date" class="form-control" name="dob" value="{{$user_prof['dob']}}" disabled>
+                  <input id="dob" type="date" class="form-control" name="dob" value="{{$user_prof['dob']}}" readonly>
                 </div>
               </div>
               <div class="form-group row">
                 <label for="address" class="col-md-4 col-form-label text-md-right">Address</label>
                 <div class="col-md-6">
                   <textarea name="address" id="address" style="width:100%;height:100px;resize:none" class="form-control"
-                    disabled>{{$user_prof['address']}}</textarea>
+                    readonly>{{$user_prof['address']}}</textarea>
                 </div>
               </div>
             </form>
           </div>
           <div class="form-group col-md-4">
             <div class="mt-5">
-              @if(file_exists(public_path().'/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}')) <img
-                src="/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}" alt="{{$user_prof->profile}}"
-                class="w-50"> @else <img src="/image/default_img.png" alt="default_img.png" class="w-50"> @endif </div>
+              <img src="@if(file_exists(" public_path()/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}"))
+                /profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}@else /image/default_img.png @endif"
+                alt="{{$user_prof->profile}}" class="w-50"></div>
           </div>
         </div>
       </div>

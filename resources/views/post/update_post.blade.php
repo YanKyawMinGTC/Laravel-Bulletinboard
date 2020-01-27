@@ -4,7 +4,11 @@
       <div class="card">
         <div class="card-header">Update Post</div>
         <div class="card-body">
-          <form action="{{ route('posts.update', $post->id) }}" method="post"> @csrf @method('PATCH')<div
+          <form action="{{ route('posts.confirm_update') }}" method="post"> @csrf 
+            
+              <input type="text" name="id" value="{{$post->id}}" hidden>
+        
+            <div
               class="form-group row">
               <label for="title" class="col-md-4 col-form-label text-md-right">Title</label>
               <div class="col-md-6">

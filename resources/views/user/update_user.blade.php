@@ -5,8 +5,8 @@
         <div class="card-header">Update User</div>
         <div class="row">
           <div class="card-body col-md-9">
-            <form method="POST" action="{{ route('users.update',$users->id) }}" enctype="multipart/form-data"> @csrf
-              @method('PATCH')<div class="form-group row">
+            <form method="POST" action="{{ route('users.confirm_update') }}" enctype="multipart/form-data"> @csrf
+              <div class="form-group row">
                 <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
                 <div class="col-md-6">
                   <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
@@ -73,9 +73,9 @@
                   @endif
                   </div>
               <div class="d-flex justify-content-start mb-5 ml-5">
-                <a href="{{ route('users.change_password',$users->id) }}">Change Password</a>
+                <a href="/user/change_password">Change Password</a>
               </div>
-              <div class="form-group row mb-0 ">
+              <div class="form-group row mb-0">
                 <div class="col-md-6 mx-auto">
                   <button type="submit" class="btn btn-primary mr-3">Confirm</button>
                   <button type="reset" class="btn btn-primary" onclick="resetimg()">Clear</button>
