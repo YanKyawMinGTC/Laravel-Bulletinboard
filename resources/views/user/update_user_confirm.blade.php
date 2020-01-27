@@ -5,18 +5,19 @@
         <div class="card-header">Update User Confirm</div>
         <div class="row">
           <div class="card-body col-md-12">
-            <form method="POST" action="{{ route('users.update',$user_id) }}"> @csrf @method('PATCH')
-
-              <div class="form-group col-md-4">
-                <div class="mt-5">
-                  <input type="text" name="profile" value="@if(file_exists("public_path()/profile_img/{{$user_id}}/image/{{$file_name}}")){{$file_name}}@else /image/default_img.png @endif" hidden>
-                      <img src="@if(file_exists("public_path()/profile_img/{{$user_id}}/image/{{$file_name}}"))/profile_img/{{$user_id}}/image/{{$file_name}}@else /image/default_img.png @endif" alt="default_img" class="w-50">
-                </div>
+            <form method="POST" action="{{ route('users.update',$user_id) }}"> @csrf @method('PATCH') <div
+                class="form-group col-md-4">
+                <div class="mt-5"> @if(!file_exists(public_path()."/profile_img/{{$user_id}}/image/{{$file_name}}"))
+                  <input type="text" name="profile" value="{{$file_name}}" hidden>
+                  <img src="/profile_img/{{$user_id}}/image/{{$file_name}}" alt="{{$file_name}}" class="w-50"> @else
+                  <input type="text" name="profile" value="{{$file_name}}" hidden>
+                  <img src="/image/default_img.png" alt="default_img" class="w-50"> @endif </div>
               </div>
               <div class="form-group row">
                 <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
                 <div class="col-md-6">
-                <input id="name" type="text" class="form-control" name="name" value="{{$user_detail['name']}}" readonly></div>
+                  <input id="name" type="text" class="form-control" name="name" value="{{$user_detail['name']}}"
+                    readonly></div>
               </div>
               <div class="form-group row">
                 <label for="email" class="col-md-4 col-form-label text-md-right">Email Address</label>
@@ -28,26 +29,29 @@
               <div class="form-group row">
                 <label for="type" class="col-md-4 col-form-label text-md-right">Type</label>
                 <div class="col-md-6">
-                    <input class="form-control" type="text" name="type" value="@if($user_detail['type']==0)Admin @else User @endif" readonly>
+                  <input class="form-control" type="text" name="type"
+                    value="@if($user_detail['type']==0)Admin @else User @endif" readonly>
                 </div>
               </div>
               <div class="form-group row">
                 <label for="phone" class="col-md-4 col-form-label text-md-right">Phone</label>
                 <div class="col-md-6">
-                  <input id="phone" type="phone" class="form-control" name="phone" value="{{$user_detail['phone']}}" autocomplete="phone" readonly>
+                  <input id="phone" type="phone" class="form-control" name="phone" value="{{$user_detail['phone']}}"
+                    autocomplete="phone" readonly>
                 </div>
               </div>
               <div class="form-group row">
                 <label for="dob" class="col-md-4 col-form-label text-md-right">Date Of Birth</label>
                 <div class="col-md-6">
-                  <input id="dob" type="date" class="form-control" name="dob" value="{{$user_detail['dob']}}" autocomplete="dob" readonly>
+                  <input id="dob" type="date" class="form-control" name="dob" value="{{$user_detail['dob']}}"
+                    autocomplete="dob" readonly>
                 </div>
               </div>
               <div class="form-group row">
                 <label for="address" class="col-md-4 col-form-label text-md-right">Address</label>
                 <div class="col-md-6">
-                  <textarea name="address" id="address" class="form-control"
-                    style="width:100%;height:200px;resize:none" readonly>{{$user_detail['address']}}</textarea>
+                  <textarea name="address" id="address" class="form-control" style="width:100%;height:200px;resize:none"
+                    readonly>{{$user_detail['address']}}</textarea>
                 </div>
               </div>
               <div class="form-group row mb-0 ">

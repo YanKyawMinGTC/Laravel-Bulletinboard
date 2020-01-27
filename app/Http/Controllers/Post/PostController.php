@@ -26,12 +26,12 @@ class PostController extends Controller
             $user = User::find($user_id);
             $user_post = $user->post()->get();
             if (count($user_post) > 0) {
-                return view('post.post_list')->with('posts', $user_post);
+                return view('post.post_list')->with('posts', $user_post)->simplePaginate(10);
             } elseif (count($user_post) == 0) {
                 return view('post.post_list')->withMessage("No Post Found");
             }
         } elseif (auth()->user()->type == 0) {
-            $posts = Post::orderBy('created_at', 'desc')->paginate(100);
+            $posts = Post::all();
             if (count($posts) > 0) {
                 return view('post.post_list')->with('posts', $posts);
             } elseif (count($posts) == 0) {
@@ -133,24 +133,23 @@ class PostController extends Controller
         return redirect()->route("posts.index");
     }
 
-
     public function confirm_create(Request $request)
     {
         $VData = $request->validate([
             "title" => "required|min:4|max:255|unique:posts",
             "description" => "required|min:3|max:255",
         ]);
-            return view('post.create_post_confirm')->with("posts",$VData);
+        return view('post.create_post_confirm')->with("posts", $VData);
     }
     public function confirm_update(Request $request)
     {
-        $post_id=$request['id'];
+        $post_id = $request['id'];
         $validate_post = $request->validate([
             "title" => "required|min:4|max:255|unique:posts",
             "description" => "required|min:3|max:255",
-            "status"=>""
+            "status" => "",
         ]);
-            return view('post.update_post_confirm')->with("posts",$validate_post)->with("post_id",$post_id);
+        return view('post.update_post_confirm')->with("posts", $validate_post)->with("post_id", $post_id);
     }
 
 }

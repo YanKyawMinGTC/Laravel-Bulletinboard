@@ -64,7 +64,7 @@
                   </span> @enderror </div>
               </div>
               <div class="d-flex justify-content-center">
-               @if(file_exists(public_path().'/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}'))
+               @if(!file_exists(public_path().'/profile_img/{{$users->id}}/image/{{$users->profile}}'))
                 <img src="/profile_img/{{$users->id}}/image/{{$users->profile}}" class="default_img"
                   alt="{{$users->profile}}" width="200">
                   @else
@@ -85,7 +85,7 @@
           </div>
           <div class="form-group col-md-2">
             <div class="mt-5 mr-5 w-100 ">
-             @if(file_exists(public_path().'/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}'))
+             @if(!file_exists(public_path()."/profile_img/{{$users->id}}/image/{{$users->profile}}"))
               <img src="/profile_img/{{$users->id}}/image/{{$users->profile}}" class="default_img"
                 alt="{{$users->profile}}" style="width:100%;">
                 @else

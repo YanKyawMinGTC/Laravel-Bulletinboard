@@ -50,9 +50,13 @@
           </div>
           <div class="form-group col-md-4">
             <div class="mt-5">
-              <img src="@if(file_exists(" public_path()/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}"))
-                /profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}@else /image/default_img.png @endif"
-                alt="{{$user_prof->profile}}" class="w-50"></div>
+            @if(!file_exists("/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}"))
+              <img src="/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}"
+                alt="{{$user_prof->profile}}" class="w-50">
+                @else
+                <img src="/image/default_img.png" alt="default_img" class="w-50">
+                  @endif
+                </div>
           </div>
         </div>
       </div>

@@ -9,9 +9,6 @@
   <a href="#" class="close" data-dismiss="alert" arial-label="close">&times;</a><strong>SUCCESS</strong>
 &nbsp; {{ session()->get('message')}}</div>
 @endif
-
-
-
   <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">

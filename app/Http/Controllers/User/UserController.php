@@ -4,11 +4,11 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Auth;
 
 class UserController extends Controller
 {
@@ -42,7 +42,11 @@ class UserController extends Controller
             ->join('users as u1', 'u1.id', 'users.create_user_id')
             ->orderBy('users.updated_at', 'DESC')
             ->paginate(50);
-        return view("user.user_list")->with('users', $users);
+        if (count($users) > 0) {
+            return view('user.user_list')->with('users', $users);
+        } elseif (count($users) == 0) {
+            return view('user.user_list')->withMessage("No Users Found");
+        }
     }
 
     /**
@@ -63,9 +67,9 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        if($request['type']=='Admin'){
+        if ($request['type'] == 'Admin') {
             $request['type'] = "0";
-        }else{
+        } else {
             $request['type'] = "1";
         }
         $user = User::create([
@@ -76,7 +80,7 @@ class UserController extends Controller
             'type' => $request['type'],
             'dob' => $request['dob'],
             'address' => $request['address'],
-            'profile' =>$request['profile'],
+            'profile' => $request['profile'],
             'create_user_id' => auth()->user()->id,
             'updated_user_id' => auth()->user()->id,
         ]);
@@ -102,10 +106,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        if(auth()->user()->id==$id){
+        if (auth()->user()->id == $id) {
+
             $user = User::find($id);
-                return view("user.update_user")->with('users', $user);
-        }else{
+            return view("user.update_user")->with('users', $user);
+        } else {
             return redirect('/posts')->with('error', 'Unauthorized Page');
         }
 
@@ -120,9 +125,9 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if($request['type']=='Admin'){
+        if ($request['type'] == 'Admin') {
             $request['type'] = "0";
-        }else{
+        } else {
             $request['type'] = "1";
         }
         $user_update = User::find($id);
@@ -147,13 +152,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        if(auth()->user()->id < $id || auth()->user()->id != $id ){
+        if (auth()->user()->id < $id || auth()->user()->id != $id) {
             $user_id = User::findOrFail($id);
             $user_id->deleted_user_id = auth()->user()->id;
             $user_id->save();
             $user_id->delete();
             return redirect()->route("users.index");
-        }else{
+        } else {
             return redirect()->route("users.index");
         }
 
@@ -165,9 +170,9 @@ class UserController extends Controller
             'email' => ['required', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])/', 'confirmed'],
             'type' => ['required'],
-            'phone'=>[],
-            'dob'=>[],
-            'address'=>[],
+            'phone' => [],
+            'dob' => [],
+            'address' => [],
             'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         // Handle File Upload
@@ -189,7 +194,7 @@ class UserController extends Controller
             } else {
                 $request->file('profile')->move($img_dir, $fileNameToStore);
             }
-            return view('user.create_user_confirm')->with("user_detail",$VData)->with("user_id",$user_id)->with("file_name",$fileNameToStore);
+            return view('user.create_user_confirm')->with("user_detail", $VData)->with("user_id", $user_id)->with("file_name", $fileNameToStore);
         } else {
             dd("Profile not found");
         }
@@ -200,9 +205,9 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'email', 'max:255', 'unique:users'],
             'type' => ['required'],
-            'phone'=>[],
-            'dob'=>[],
-            'address'=>[],
+            'phone' => [],
+            'dob' => [],
+            'address' => [],
             'profile' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         // Handle File Upload
@@ -225,27 +230,27 @@ class UserController extends Controller
             } else {
                 $request->file('profile')->move($img_dir, $fileNameToStore);
             }
-            return view('user.update_user_confirm')->with("user_detail",$validate_user)->with("user_id",$user_id)->with("file_name",$fileNameToStore);
+            return view('user.update_user_confirm')->with("user_detail", $validate_user)->with("user_id", $user_id)->with("file_name", $fileNameToStore);
         } else {
             dd("Profile not found");
         }
     }
     public function change_pass(Request $request)
     {
-        if(!(Hash::check($request->get("old_password"),Auth::user()->password))){
-            return back()->with('error',"Your current Password doesn't match");
+        if (!(Hash::check($request->get("old_password"), Auth::user()->password))) {
+            return back()->with('error', "Your current Password doesn't match");
         }
-        if(strcmp($request->get("old_password"),$request->get("new_password")) == 0){
-            return back()->with('error',"Your current Password cannot be the same with the new password");
+        if (strcmp($request->get("old_password"), $request->get("new_password")) == 0) {
+            return back()->with('error', "Your current Password cannot be the same with the new password");
         }
         // dd($request);
         $request->validate([
-            "old_password"=>['required'],
-            "new_password"=>['required','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])/', 'confirmed']
+            "old_password" => ['required'],
+            "new_password" => ['required', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])/', 'confirmed'],
         ]);
-        $user= Auth::user();
+        $user = Auth::user();
         $user->password = bcrypt($request->get('new_password'));
         $user->save();
-        return back()->with("message","Password changed successfully");
+        return back()->with("message", "Password changed successfully");
     }
 }

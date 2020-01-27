@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Post;
 
 use App\Export\ExportExcel;
+use App\Http\Controllers\Controller;
 use App\Import\Importcsv;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Http\Controllers\Controller;
 
 class FileController extends Controller
 {

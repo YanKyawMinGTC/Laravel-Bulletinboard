@@ -34,12 +34,12 @@ $factory->define(User::class, function (Faker $faker) {
 });
 $factory->define(Post::class, function (Faker $faker) {
     return [
-        'title' => "How to learn Vue 6",
+        'title' => "Meet to the top ",
         'description' => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores ipsa nulla eius quibusdam atque, cumque excepturi eum? Minima quis perspiciatis dignissimos praesentium corrupti aliquid? Vitae, molestiae impedit? Quidem, labore dolore!
 ",
         'status' => 1,
-        'create_user_id' => 2,
-        'updated_user_id' => 1,
+        'create_user_id' => 1,
+        'updated_user_id' => 3,
         'created_at' => now(),
     ];
 });

@@ -6,14 +6,12 @@
         <div class="row">
           <div class="card-body col-md-8">
             <form method="POST" action="{{ route('users.store') }}"> @csrf <div class="form-group col-md-4">
-                <div class="mt-5">
-                  <input type="text" name="profile" value="@if(file_exists("
-                    public_path()/profile_img/{{$user_id}}/image/{{$file_name}}")) {{$file_name}}@else
-                    /image/default_img.png @endif" hidden><img src="@if(file_exists("
-                    public_path()/profile_img/{{$user_id}}/image/{{$file_name}}"))
-                    /profile_img/{{$user_id}}/image/{{$file_name}}@else /image/default_img.png @endif" alt="default_img"
-                    class="w-50">
-                </div>
+                <div class="mt-5 form-group float-right">
+                  @if(!file_exists("/profile_img/{{$user_id}}/image/{{$file_name}}")) <input type="text" name="profile"
+                    value="{{$file_name}}" hidden>
+                  <img src="/profile_img/{{$user_id}}/image/{{$file_name}}" alt="{{$file_name}}" class="w-50"> @else
+                  <input type="text" name="profile" value="default_img.png" hidden>
+                  <img src="/image/default_img.png" alt="default_img" class="w-50"> @endif </div>
               </div>
               <div class="form-group row">
                 <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
