@@ -32,6 +32,7 @@
                       class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
                     </span> @enderror </div>
+                     <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
                 </div>
                 <div class="form-group row">
                   <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
@@ -41,6 +42,7 @@
                       role="alert">
                       <strong>{{ $message }}</strong>
                     </span> @enderror </div>
+                     <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
                 </div>
                 <div class="form-group row">
                   <div class="col-md-6 offset-md-4">

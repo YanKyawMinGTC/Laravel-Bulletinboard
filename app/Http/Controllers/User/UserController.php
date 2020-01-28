@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Contracts\Services\User\UserServiceInterface;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\UserService;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -12,43 +14,27 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function __construct()
+    private $userService;
+    public function __construct(UserServiceInterface $user)
     {
         $this->middleware('auth');
+        $this->userService = $user;
+
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index_old()
-    {
-        $users = User::orderBy('created_at', 'desc')
-            ->paginate(100);
-        return view("user.user_list")->with('users', $users);
-    }
     public function index()
     {
-        $users = User::select(
-            'users.name',
-            'users.email',
-            'users.phone',
-            'users.dob',
-            'users.address',
-            'users.created_at',
-            'users.updated_at',
-            'users.id',
-            'u1.name as created_user_name')
-            ->join('users as u1', 'u1.id', 'users.create_user_id')
-            ->orderBy('users.updated_at', 'DESC')
-            ->paginate(50);
+        $users = $this->userService->getUserList();
         if (count($users) > 0) {
             return view('user.user_list')->with('users', $users);
         } elseif (count($users) == 0) {
             return view('user.user_list')->withMessage("No Users Found");
         }
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -72,19 +58,18 @@ class UserController extends Controller
         } else {
             $request['type'] = "1";
         }
-        $user = User::create([
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'password' => Hash::make($request['password']),
-            'phone' => $request['phone'],
-            'type' => $request['type'],
-            'dob' => $request['dob'],
-            'address' => $request['address'],
-            'profile' => $request['profile'],
-            'create_user_id' => auth()->user()->id,
-            'updated_user_id' => auth()->user()->id,
-        ]);
-        $user->save();
+        $auth_id = auth()->user()->id;
+        $user_new = new User;
+        $user_new->name = $request['name'];
+        $user_new->email = $request['email'];
+        $user_new->password = Hash::make($request['password']);
+        $user_new->phone = $request['phone'];
+        $user_new->type = $request['type'];
+        $user_new->dob = $request['dob'];
+        $user_new->address = $request['address'];
+        $user_new->profile = $request['profile'];
+        $user_new->create_user_id = auth()->user()->id;
+        $user = $this->userService->store($auth_id, $user_new);
         return redirect('/users');
     }
     /**
@@ -107,15 +92,12 @@ class UserController extends Controller
     public function edit($id)
     {
         if (auth()->user()->id == $id) {
-
-            $user = User::find($id);
+            $user = $this->userService->edit($id);
             return view("user.update_user")->with('users', $user);
         } else {
             return redirect('/posts')->with('error', 'Unauthorized Page');
         }
-
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -130,7 +112,8 @@ class UserController extends Controller
         } else {
             $request['type'] = "1";
         }
-        $user_update = User::find($id);
+        $user_update = new User;
+        $user_update->id = $id;
         $user_update->name = $request['name'];
         $user_update->email = $request['email'];
         $user_update->type = $request['type'];
@@ -138,9 +121,7 @@ class UserController extends Controller
         $user_update->phone = $request['phone'];
         $user_update->address = $request['address'];
         $user_update->dob = $request['dob'];
-        $user_update->updated_user_id = auth()->user()->id;
-        $user_update->updated_at = now();
-        $user_update->save();
+        $user = $this->userService->update($user_update);
         return redirect()->route('users.show', auth()->user()->id);
     }
 
@@ -153,15 +134,11 @@ class UserController extends Controller
     public function destroy($id)
     {
         if (auth()->user()->id < $id || auth()->user()->id != $id) {
-            $user_id = User::findOrFail($id);
-            $user_id->deleted_user_id = auth()->user()->id;
-            $user_id->save();
-            $user_id->delete();
+            $user = $this->userService->delete($id);
             return redirect()->route("users.index");
         } else {
             return redirect()->route("users.index");
         }
-
     }
     public function confirm_create(Request $request)
     {
@@ -222,7 +199,7 @@ class UserController extends Controller
             // Filename to store
             $fileNameToStore = strtolower($filename . '_' . date('Y_m_d') . '.' . $extension);
 
-            $user_id = User::latest()->first()->id;
+            $user_id = auth()->user()->id;
             $img_dir = 'profile_img/' . $user_id . "/image";
             if (!file_exists($img_dir)) {
                 File::makeDirectory($img_dir, $mode = 0777, true, true);
@@ -237,20 +214,19 @@ class UserController extends Controller
     }
     public function change_pass(Request $request)
     {
+        $request->validate([
+            "old_password" => ['required'],
+            "new_password" => ['required', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])/', 'confirmed'],
+        ]);
+
         if (!(Hash::check($request->get("old_password"), Auth::user()->password))) {
             return back()->with('error', "Your current Password doesn't match");
         }
         if (strcmp($request->get("old_password"), $request->get("new_password")) == 0) {
             return back()->with('error', "Your current Password cannot be the same with the new password");
         }
-        // dd($request);
-        $request->validate([
-            "old_password" => ['required'],
-            "new_password" => ['required', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])/', 'confirmed'],
-        ]);
-        $user = Auth::user();
-        $user->password = bcrypt($request->get('new_password'));
-        $user->save();
+        $user_new_pass = $request['new_password'];
+        $user = $this->userService->changePassword($user_new_pass);
         return back()->with("message", "Password changed successfully");
     }
 }

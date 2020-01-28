@@ -2,49 +2,39 @@
 
 namespace App\Http\Controllers\Post;
 
+use App\Contracts\Services\Post\PostServiceInterface;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\User;
+use App\Services\Post\PostService;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
+    private $postService;
+
+    public function __construct(PostServiceInterface $post)
+    {
+        $this->postService = $post;
+    }
     public function post_search(Request $request)
     {
-
-        $q = trim($request['search_keyword']);
+        $search_keyword = trim($request['search_keyword']);
         $user_type = auth()->user()->type;
         $user_id = auth()->user()->id;
-        if ($q == "") {
-            return view('post/post_list')->withQuery($q)->withMessage("Please...enter your title, description or Posted User !");
+        if ($search_keyword == "") {
+            return view('post/post_list')->withQuery($search_keyword)->withMessage("Please...enter your title, description or Posted User !");
         } else {
-            if ($user_type == 0) {
-                $posts = Post::where('title', 'like', '%' . $q . '%')
-                    ->orwhere('description', 'like', '%' . $q . '%')
-                    ->orWhereHas('user', function ($query) use ($q) {
-                        $query->where('name', 'like', '%' . $q . '%');
-                    })
-                    ->latest()
-                    ->paginate(10)
-                    ->withPath('?search=' . $q);
-                if (count($posts) > 0) {
-                    return view('post/post_list')->with("posts", $posts)->withQuery($q);
-                } else {
-                    return view('post/post_list')->withQuery($q)->withMessage("No Search Details found. Try to search again !");
-                }
-            } elseif ($user_type == 1) {
-                $user = Post::where('create_user_id', 'LIKE', '%' . $user_id . '%')->where('title', 'LIKE', '%' . $q . '%')->orWhere('description', 'LIKE', '%' . $q . '%')->paginate(20);
-                if (count($user) > 0) {
-                    return view('post/post_list')->with("posts", $user)->withQuery($q);
-                } else {
-                    return view('post/post_list')->withQuery($q)->withMessage("No Search Details found. Try to search again !");
-                }
+            $posts = $this->postService->searchPost($search_keyword, $user_type, $user_id);
+            if (count($posts) > 0) {
+                return view('post/post_list')->with("posts", $posts)->withQuery($search_keyword);
+            } else {
+                return view('post/post_list')->withQuery($search_keyword)->withMessage("No Search Details found. Try to search again !");
             }
         }
     }
     public function user_search(Request $request)
     {
-
         $name = $request->name;
         $email = $request->email;
         $created_from = $request->created_from;

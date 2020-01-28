@@ -14,6 +14,7 @@
                     class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                   </span> @enderror </div>
+                   <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
               </div>
               <div class="form-group row">
                 <label for="email" class="col-md-4 col-form-label text-md-right">Email Address</label>
@@ -23,6 +24,7 @@
                     role="alert">
                     <strong>{{ $message }}</strong>
                   </span> @enderror </div>
+                   <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
               </div>
               <!-- // for only admin --> @if(auth()->user()->type==0) <div class="form-group row">
                 <label for="type" class="col-md-4 col-form-label text-md-right">Type</label>
@@ -34,6 +36,7 @@
                   </select>@error('type') <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                   </span> @enderror </div>
+                   <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
               </div> @else <input type="text" name="type" value="1" hidden> @endif <div class="form-group row">
                 <label for="phone" class="col-md-4 col-form-label text-md-right">Phone</label>
                 <div class="col-md-6">
@@ -62,6 +65,7 @@
                   <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                   </span> @enderror </div>
+                   <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
               </div>
               <div class="d-flex justify-content-center">
                @if(!file_exists(public_path().'/profile_img/{{$users->id}}/image/{{$users->profile}}'))

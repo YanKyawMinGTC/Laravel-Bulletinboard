@@ -4,7 +4,7 @@
       <div class="card">
         <div class="card-header">Create Post</div>
         <div class="card-body">
-          <form method="POST" action="{{route('posts.confirm_create')}}"> @csrf <div class="form-group row">
+          <form method="GET" action="{{route('posts.create')}}"> @csrf <div class="form-group row">
               <label for="title" class="col-md-4 col-form-label text-md-right">Title</label>
               <div class="col-md-6">
                 <input id="title" type="title" class="form-control @error('title') is-invalid @enderror" name="title"
@@ -12,6 +12,7 @@
                   class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span> @enderror</div>
+                 <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
             </div>
             <div class="form-group row">
               <label for="description" class="col-md-4 col-form-label text-md-right">Description</label>
@@ -22,6 +23,7 @@
                 @error('description') <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span> @enderror </div>
+                 <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
               <div class="col-md-6 text-center ml-5">
                 <button type="submit" class="btn btn-primary mr-3">Confirm</button>
                 <button type="reset" class="btn btn-primary">Clear</button>

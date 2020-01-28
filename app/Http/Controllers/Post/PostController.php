@@ -2,18 +2,29 @@
 
 namespace App\Http\Controllers\Post;
 
+use App\Contracts\Services\Post\PostServiceInterface;
+use App\Export\ExportExcel;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\User;
+use App\Services\Post\PostService;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PostController extends Controller
 {
 
-    public function __construct()
+    private $postService;
+
+    public function __construct(PostServiceInterface $post)
     {
         $this->middleware('auth');
+        $this->postService = $post;
     }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
     /**
      * Display a listing of the resource.
      *
@@ -21,34 +32,29 @@ class PostController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->type == 1) {
-            $user_id = auth()->user()->id;
-            $user = User::find($user_id);
-            $user_post = $user->post()->get();
-            if (count($user_post) > 0) {
-                return view('post.post_list')->with('posts', $user_post)->simplePaginate(10);
-            } elseif (count($user_post) == 0) {
-                return view('post.post_list')->withMessage("No Post Found");
-            }
-        } elseif (auth()->user()->type == 0) {
-            $posts = Post::all();
-            if (count($posts) > 0) {
-                return view('post.post_list')->with('posts', $posts);
-            } elseif (count($posts) == 0) {
-                return view('post.post_list')->withMessage("No Post Found");
-            }
+        $auth_id = auth()->user()->id;
+        $user_type = auth()->user()->type;
+        $posts = $this->postService->getPost($auth_id, $user_type);
+
+        if (count($posts) > 0) {
+            return view('post.post_list')->with('posts', $posts);
+        } elseif (count($posts) == 0) {
+            return view('post.post_list')->withMessage("No Post Found");
         }
+
     }
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view("post.create")
-            ->with("user", $user);
-
+        $VData = $request->validate([
+            "title" => "required|min:4|max:255|unique:posts",
+            "description" => "required|min:3|max:255",
+        ]);
+        return view('post.create_post_confirm')->with("posts", $VData);
     }
     /**
      * Store a newly created resource in storage.
@@ -58,28 +64,23 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $user = Post::create([
-            'title' => $request['title'],
-            'description' => $request['description'],
-            'created_at' => now(),
-            "create_user_id" => auth()->user()->id,
-            "updated_user_id" => auth()->user()->id,
-        ]);
-        $user->save();
+        $auth_id = auth()->user()->id;
+        $post_new = new Post;
+        $post_new->title = $request['title'];
+        $post_new->description = $request['description'];
+        $post = $this->postService->store($auth_id, $post_new);
         return redirect('/posts');
     }
     /**
      * Display the specified resource.
-     *
+     * post detail show
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $post = Post::find($id);
-        return view('post.post_detail')->with('post', $post);
-    }
 
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -88,7 +89,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::find($id);
+        $post = $this->postService->edit($id);
         if (auth()->user()->type == 0) {
             if (auth()->user()->id !== $post->create_user_id) {
                 return redirect('/posts')->with('error', 'Unauthorized Page');
@@ -109,15 +110,13 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $post = Post::find($id);
-        $post->title = $request['title'];
-        $post->description = $request['description'];
-        $post->updated_user_id = auth()->user()->id;
-        $post->updated_at = now();
-        $post->save();
+        $post_update = new Post;
+        $post_update->id = $id;
+        $post_update->title = $request['title'];
+        $post_update->description = $request['description'];
+        $post = $this->postService->update($post_update);
         return redirect()->route("posts.index");
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -126,10 +125,7 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post_id = Post::findOrFail($id);
-        $post_id->deleted_user_id = auth()->user()->id;
-        $post_id->save();
-        $post_id->delete();
+        $post = $this->postService->delete($id);
         return redirect()->route("posts.index");
     }
 
@@ -150,6 +146,27 @@ class PostController extends Controller
             "status" => "",
         ]);
         return view('post.update_post_confirm')->with("posts", $validate_post)->with("post_id", $post_id);
+    }
+    public function import(Request $request)
+    {
+        $auth_id = auth()->user()->id;
+        $VData = $request->validate([
+            'file' => 'required|max:2048',
+        ]);
+        $file = $request->file('file');
+        $extension = $file->getClientOriginalExtension();
+        if ($extension != 'csv') {
+            return redirect()->back()->withInvalid('The file must be a file of type: csv.');
+        }
+        $fileName = $file->getClientOriginalName();
+        $file->move("upload/" . $auth_id, $fileName);
+        $filepath = public_path() . '/upload/' . $fileName;
+        $import_csv_file = $this->postService->import($auth_id, $filepath);
+        return redirect()->intended('posts')->withSuccess('Csv file upload successfully.');
+    }
+    public function export()
+    {
+        return Excel::download(new ExportExcel, 'posts.xlsx');
     }
 
 }

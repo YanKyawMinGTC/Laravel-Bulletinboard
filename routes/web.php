@@ -30,6 +30,8 @@ Auth::routes();
 
 Route::post("posts/confirm_update", "Post\PostController@confirm_update")->name('posts.confirm_update');
 Route::post("posts/confirm_create", "Post\PostController@confirm_create")->name('posts.confirm_create');
+Route::post("posts/import", "Post\PostController@import")->name('posts.import');
+Route::get("posts/export", "Post\PostController@export")->name('posts.export');
 Route::resource("posts", "Post\PostController");
 
 Route::post("users/confirm_update", "User\UserController@confirm_update")->name('users.confirm_update');
@@ -39,6 +41,3 @@ Route::resource("users", "User\UserController");
 
 Route::post('/search_post', "Post\SearchController@post_search");
 Route::post('/search_user', "Post\SearchController@user_search");
-
-Route::post('import', 'Post\FileController@import')->name('import');
-Route::get('export', 'Post\FileController@export')->name('export');

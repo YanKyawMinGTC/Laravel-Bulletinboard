@@ -13,6 +13,7 @@
                   role="alert">
                   <strong>{{ $message }}</strong>
                 </span> @enderror </div>
+                 <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
             </div>
             <div class="form-group row">
               <label for="email" class="col-md-4 col-form-label text-md-right">Email Address</label>
@@ -22,6 +23,7 @@
                   class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span> @enderror </div>
+                 <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
             </div>
             <div class="form-group row">
               <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
@@ -31,12 +33,14 @@
                 @error('password') <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span> @enderror </div>
+                 <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
             </div>
             <div class="form-group row">
               <label for="confirm-password" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
               <div class="col-md-6">
                 <input id="confirm-password" type="password" class="form-control" name="password_confirmation"
                   autocomplete="new-password"></div>
+                   <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
             </div>
             <!-- // for only admin -->
             <div class="form-group row">
@@ -49,6 +53,7 @@
                 </select> @error('type') <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span> @enderror </div>
+                 <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
             </div>
             <div class="form-group row">
               <label for="phone" class="col-md-4 col-form-label text-md-right">Phone</label>
@@ -83,6 +88,7 @@
                 @error('profile') <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span> @enderror <img src="/image/default_img.png" class="default_img" width="200"> </div>
+                 <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
             </div>
             <div class="form-group row mb-0 ">
               <div class="col-md-6 mx-auto">

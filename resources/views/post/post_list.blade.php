@@ -1,5 +1,8 @@
-@extends('layouts.app') @section('content') <div class="container">
-  <div class="title">
+@extends('layouts.app') @section('content') <div class="container"> @if($message = Session::get('success')) <div
+    class="alert alert-success alert-block">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>{{ $message }}</strong>
+  </div> @endif <div class="title">
     <h2><a href="/posts">Post List</a></h2>
   </div>
   <div class="row  mb-5">
@@ -23,7 +26,7 @@
       <a href="/post/upload_csv" class="btn btn-primary w-50">Upload</a>
     </div>
     <div class="col-2">
-      <a href="{{ route('export') }}" class="btn btn-primary w-80 text-center">Download</a>
+      <a href="{{ route('posts.export') }}" class="btn btn-primary w-80 text-center">Download</a>
     </div>
   </div>
   <table class="table table-striped">
@@ -77,7 +80,7 @@
       </tr> @endforeach @endif @else @if(isset($query)) <p> The Search results for your query <b> {{ $query }} </b> are
         : <td colspan="7"> {{$message}}</td> @elseif(!isset($query)) <td colspan="7"> {{$message}}</td> @endif @endif
     </tbody>
-  </table> {{ $posts->links() }}
+  </table>
 </div> @endsection <div class="modal fade" id="favoritesModal" tabindex="-1" role="dialog"
   aria-labelledby="favoritesModalLabel">
   <div class="modal-dialog" role="document">
