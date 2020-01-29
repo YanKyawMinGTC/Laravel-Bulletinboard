@@ -36,7 +36,7 @@
               <div class="form-group row">
                 <label for="dob" class="col-md-4 col-form-label text-md-right">Date Of Birth</label>
                 <div class="col-md-6">
-                  <input id="dob" type="date" class="form-control" name="dob" value="{{$user_prof['dob']}}" readonly>
+                  <input id="dob" type="text" class="form-control" name="dob" value="{{date('Y/m/d', strtotime($user_prof['dob']))}}" readonly>
                 </div>
               </div>
               <div class="form-group row">

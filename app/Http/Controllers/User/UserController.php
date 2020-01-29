@@ -30,9 +30,9 @@ class UserController extends Controller
     {
         $users = $this->userService->getUserList();
         if (count($users) > 0) {
-            return view('user.user_list')->with('users', $users);
+            return view('user.userList')->with('users', $users);
         } elseif (count($users) == 0) {
-            return view('user.user_list')->withMessage("No Users Found");
+            return view('user.userList')->withMessage("No Users Found");
         }
     }
     /**
@@ -80,8 +80,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user_profile = User::find($id);
-        return view('user.user_profile')->with('user_prof', $user_profile);
+        $user = User::find($id);
+        return view('user.userProfile')->with('user_prof', $user);
     }
     /**
      * Show the form for editing the specified resource.
@@ -93,7 +93,7 @@ class UserController extends Controller
     {
         if (auth()->user()->id == $id) {
             $user = $this->userService->edit($id);
-            return view("user.update_user")->with('users', $user);
+            return view("user.updateUser")->with('users', $user);
         } else {
             return redirect('/posts')->with('error', 'Unauthorized Page');
         }
@@ -171,7 +171,7 @@ class UserController extends Controller
             } else {
                 $request->file('profile')->move($img_dir, $fileNameToStore);
             }
-            return view('user.create_user_confirm')->with("user_detail", $VData)->with("user_id", $user_id)->with("file_name", $fileNameToStore);
+            return view('user.createUserConfirm')->with("user_detail", $VData)->with("user_id", $user_id)->with("file_name", $fileNameToStore);
         } else {
             dd("Profile not found");
         }
@@ -207,7 +207,7 @@ class UserController extends Controller
             } else {
                 $request->file('profile')->move($img_dir, $fileNameToStore);
             }
-            return view('user.update_user_confirm')->with("user_detail", $validate_user)->with("user_id", $user_id)->with("file_name", $fileNameToStore);
+            return view('user.updateUserConfirm')->with("user_detail", $validate_user)->with("user_id", $user_id)->with("file_name", $fileNameToStore);
         } else {
             dd("Profile not found");
         }
@@ -228,5 +228,19 @@ class UserController extends Controller
         $user_new_pass = $request['new_password'];
         $user = $this->userService->changePassword($user_new_pass);
         return back()->with("message", "Password changed successfully");
+    }
+
+    public function search(Request $request)
+    {
+        $name = $request->name;
+        $email = $request->email;
+        $created_from = $request->created_from;
+        $created_to = $request->created_to;
+        if ($name == "" && $email == "" && $created_from == "" && $created_to == "") {
+            return view('user/userList')->withQuery($name)->withMessage("Enter Search Key");
+        } else {
+           $search_value = $this->userService->searchUser($name, $email, $created_from, $created_to);
+            return view('user/userList')->with("users", $search_value)->withQuery($name);
+        }
     }
 }

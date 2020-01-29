@@ -6,8 +6,8 @@
     <h2><a href="/posts">Post List</a></h2>
   </div>
   <div class="row  mb-5">
-    <div class="col-4">
-      <form action="/search_post" method="POST" role="search"> {{ csrf_field() }} <div class="input-group">
+<div class="col-4">
+      <form action="/posts/search" method="POST" role="search"> {{ csrf_field() }} <div class="input-group">
           <input type="text" class="form-control" name="search_keyword" placeholder="Search Post"> <span
             class="input-group-btn">
             <button type="submit" class="btn btn-primary">
@@ -18,12 +18,12 @@
       </form>
     </div>
     <div class="col-2">
-      <a href="/post/create_post" title="post create">
+      <a href="/post/createPost" title="post create">
         <button class="btn btn-primary">Add</button>
       </a>
     </div>
     <div class="col-2">
-      <a href="/post/upload_csv" class="btn btn-primary w-50">Upload</a>
+      <a href="/post/uploadCsv" class="btn btn-primary w-50">Upload</a>
     </div>
     <div class="col-2">
       <a href="{{ route('posts.export') }}" class="btn btn-primary w-80 text-center">Download</a>
@@ -65,12 +65,12 @@
         <td>
           <button type="button" class="btn btn-link" data-toggle="modal" data-id="{{ $po->id }}"
             data-title="{{ $po->title }}" data-desc="{{$po->description}}" @if($po->status==0) data-status="Inactive"
-            @elseif($po->status==1) data-status="Active" @endif data-created_at="{{$po->created_at}}"
-            data-created_user="{{ $po->user->name}}" data-updated_at="{{$po->updated_at}}"
+            @elseif($po->status==1) data-status="Active" @endif data-created_at="{{date('Y/m/d', strtotime($po->created_at))}}"
+            data-created_user="{{ $po->user->name}}" data-updated_at="{{date('Y/m/d', strtotime($po->updated_at))}}"
             data-updated_user="{{ $po->user->name}}" data-target="#favoritesModal">{{$po->title}}</button></td>
         <td colspan='3'>{{ $po->description}}</td>
         <td>{{$po->user->name}}</td>
-        <td>{{ $po->created_at}}</td>
+        <td>{{ date('Y/m/d', strtotime($po->created_at))}}</td>
         <td><a href="{{ route('posts.edit', $po->id) }}" class="btn btn-secondary btn-sm">Edit</a></td>
         <td>
           <form method="post" action="{{ route('posts.destroy', $po->id) }}"> @method('delete') @csrf <button
@@ -78,7 +78,7 @@
           </form>
         </td>
       </tr> @endforeach @endif @else @if(isset($query)) <p> The Search results for your query <b> {{ $query }} </b> are
-        : <td colspan="7"> {{$message}}</td> @elseif(!isset($query)) <td colspan="7"> {{$message}}</td> @endif @endif
+        : <tr><td colspan="6"> {{$message}}</td> @elseif(!isset($query)) <td colspan="7"> {{$message}}</td></tr> @endif @endif
     </tbody>
   </table>
 </div> @endsection <div class="modal fade" id="favoritesModal" tabindex="-1" role="dialog"

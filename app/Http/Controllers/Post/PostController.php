@@ -37,9 +37,9 @@ class PostController extends Controller
         $posts = $this->postService->getPost($auth_id, $user_type);
 
         if (count($posts) > 0) {
-            return view('post.post_list')->with('posts', $posts);
+            return view('post.postList')->with('posts', $posts);
         } elseif (count($posts) == 0) {
-            return view('post.post_list')->withMessage("No Post Found");
+            return view('post.postList')->withMessage("No Post Found");
         }
 
     }
@@ -54,7 +54,7 @@ class PostController extends Controller
             "title" => "required|min:4|max:255|unique:posts",
             "description" => "required|min:3|max:255",
         ]);
-        return view('post.create_post_confirm')->with("posts", $VData);
+        return view('post.createPostConfirm')->with("posts", $VData);
     }
     /**
      * Store a newly created resource in storage.
@@ -110,10 +110,17 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $post_update = new Post;
         $post_update->id = $id;
         $post_update->title = $request['title'];
         $post_update->description = $request['description'];
+        if ($request['status'] == null) {
+            $post_update->status = 0;
+        } else {
+            $post_update->status = 1;
+
+        }
         $post = $this->postService->update($post_update);
         return redirect()->route("posts.index");
     }
@@ -135,7 +142,7 @@ class PostController extends Controller
             "title" => "required|min:4|max:255|unique:posts",
             "description" => "required|min:3|max:255",
         ]);
-        return view('post.create_post_confirm')->with("posts", $VData);
+        return view('post.createPostConfirm')->with("posts", $VData);
     }
     public function confirm_update(Request $request)
     {
@@ -167,6 +174,22 @@ class PostController extends Controller
     public function export()
     {
         return Excel::download(new ExportExcel, 'posts.xlsx');
+    }
+    public function search(Request $request)
+    {
+        $search_keyword = trim($request['search_keyword']);
+        $user_type = auth()->user()->type;
+        $user_id = auth()->user()->id;
+        if ($search_keyword == "") {
+            return view('post/postList')->withQuery($search_keyword)->withMessage("Please...enter your title, description or Posted User !");
+        } else {
+            $posts = $this->postService->searchPost($search_keyword, $user_type, $user_id);
+            if (count($posts) > 0) {
+                return view('post/postList')->with("posts", $posts)->withQuery($search_keyword);
+            } else {
+                return view('post/postList')->withQuery($search_keyword)->withMessage("No Search Details found. Try to search again !");
+            }
+        }
     }
 
 }

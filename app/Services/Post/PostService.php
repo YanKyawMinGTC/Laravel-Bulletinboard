@@ -49,7 +49,7 @@ class PostService implements PostServiceInterface
     }
     public function searchPost($search_keyword, $user_type, $user_id)
     {
-        return $this->searchPost($search_keyword, $user_type, $user_id);
+        return $this->postDao->searchPost($search_keyword, $user_type, $user_id);
     }
 
 }

@@ -58,3 +58,16 @@ input:checked+.slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
+
+/*
+#update_confirm input[type="checkbox"][readonly] {
+    pointer-events: none;
+}
+
+#update_confirm #checkbox_circle, #switch_check {
+    pointer-events: none;
+}
+
+#update_confirm .slider:before {
+    pointer-events: none;
+} */

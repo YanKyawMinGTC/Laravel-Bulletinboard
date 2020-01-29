@@ -3,7 +3,7 @@
      <h2><a href="/users">User List</a></h2>
    </div>
    <div class="row  mb-5">
-     <form action="/search_user" method="POST" role="search"> {{ csrf_field() }} <div class="input-group">
+     <form action="/users/search" method="POST" role="search"> {{ csrf_field() }} <div class="input-group">
          <div class="col-2">
            <input type="text" class="w-100 p-1" name="name" placeholder="Enter Name">
          </div>
@@ -21,7 +21,7 @@
          </div>
      </form>
      <div class="col-2">
-       <a href="/user/create_user" title="user create" class="btn btn-primary">
+       <a href="/user/createUser" title="user create" class="btn btn-primary">
         Add
        </a>
      </div>
@@ -50,15 +50,15 @@
          <td>
            <button type="button" class="btn btn-link" data-toggle="modal" data-id="{{ $user->id }}"
              data-name="{{ $user->name }}" data-email="{{$user->email}}" data-phone="{{ $user->phone }}"
-             data-dob="{{$user->dob}}" data-address="{{$user->address}}" data-created_at="{{$user->created_at}}"
+             data-dob="{{date('Y/m/d', strtotime($user->dob))}}" data-address="{{$user->address}}" data-created_at="{{$user->created_at}}"
              data-created_user="{{$user->created_user_name}}" data-updated_at="{{$user->updated_at}}"
              data-updated_user="{{$user->updated_user}}" data-target="#userModal">{{$user->name}}</button>
          </td>
          <td>{{$user->email}}</td>
          <td>{{$user->created_user_name}}</td>
          <td>{{$user->phone}}</td>
-         <td>{{$user->dob}}</td>
-         <td>{{$user->created_at}}</td>
+         <td>{{date('Y/m/d', strtotime($user->dob))}}</td>
+         <td>{{date('Y/m/d', strtotime($user->created_at))}}</td>
          <td>
            <form method="post" action="{{ route('users.destroy', $user->id) }}"> @method('delete') @csrf <button
                type="submit" onclick="return confirm('Are you sure?');" class="btn btn-danger btn-sm">Delete</button>
@@ -69,15 +69,15 @@
          <td>
            <button type="button" class="btn btn-link" data-toggle="modal" data-id="{{ $user->id }}"
              data-name="{{ $user->name }}" data-email="{{$user->email}}" data-phone="{{ $user->phone }}"
-             data-dob="{{$user->dob}}" data-address="{{$user->address}}" data-created_at="{{$user->created_at}}"
+             data-dob="{{date('Y/m/d', strtotime($user->dob))}}" data-address="{{$user->address}}" data-created_at="{{$user->created_at}}"
              data-created_user="{{$user->created_user_name}}" data-updated_at="{{$user->updated_at}}"
              data-updated_user="{{$user->updated_user}}" data-target="#userModal">{{$user->name}}</button>
          </td>
          <td>{{$user->email}}</td>
          <td>{{$user->created_user_name}}</td>
          <td>{{$user->phone}}</td>
-         <td>{{$user->dob}}</td>
-         <td>{{$user->created_at}}</td>
+         <td>{{date('Y/m/d', strtotime($user->dob))}}</td>
+         <td>{{date('Y/m/d', strtotime($user->created_at))}}</td>
          <td>
            <form method="post" action="{{ route('users.destroy', $user->id) }}"> @method('delete') @csrf <button
                type="submit" onclick="return confirm('Are you sure?');" class="btn btn-danger btn-sm">Delete</button>

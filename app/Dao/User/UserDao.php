@@ -83,4 +83,21 @@ class UserDao implements UserDaoInterface
         $user->password = bcrypt($user_new_pass);
         $user->save();
     }
+    public function searchUser($name, $email, $created_from, $created_to)
+    {
+        $search_value = User::
+            when($name, function ($query) use ($name) {
+            $query->where('name', 'like', '%' . $name . '%');
+        })
+            ->when($email, function ($query) use ($email) {
+                $query->orWhere('email', 'like', '%' . $email . '%');
+            })
+            ->when($created_from, function ($query) use ($created_from) {
+                $query->orWhere('created_at', '>=', $created_from);
+            })
+            ->when($created_to, function ($query) use ($created_to) {
+                $query->orWhere('created_at', '<=', $created_to);
+            })->get();
+        return $search_value;
+    }
 }

@@ -42,6 +42,7 @@ class PostDao implements PostDaoInterface
         $post = Post::find($post_update['id']);
         $post->title = $post_update['title'];
         $post->description = $post_update['description'];
+        $post->status = $post_update['status'];
         $post->updated_user_id = auth()->user()->id;
         $post->updated_at = now();
         $post->save();
@@ -77,7 +78,6 @@ class PostDao implements PostDaoInterface
     }
     public function searchPost($search_keyword, $user_type, $user_id)
     {
-        dd("lasjdflaksdjflasdfk");
         if ($user_type == 0) {
             $posts = Post::where('title', 'like', '%' . $search_keyword . '%')
                 ->orwhere('description', 'like', '%' . $search_keyword . '%')
@@ -91,7 +91,6 @@ class PostDao implements PostDaoInterface
         } elseif ($user_type == 1) {
             $user = Post::where('create_user_id', 'LIKE', '%' . $user_id . '%')->where('title', 'LIKE', '%' . $search_keyword . '%')->orWhere('description', 'LIKE', '%' . $search_keyword . '%')->paginate(20);
             return $posts;
-
         }
 
     }

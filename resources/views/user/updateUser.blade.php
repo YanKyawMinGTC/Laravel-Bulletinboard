@@ -77,7 +77,7 @@
                   @endif
                   </div>
               <div class="d-flex justify-content-start mb-5 ml-5">
-                <a href="/user/change_password">Change Password</a>
+                <a href="/user/changePassword">Change Password</a>
               </div>
               <div class="form-group row mb-0">
                 <div class="col-md-6 mx-auto">
