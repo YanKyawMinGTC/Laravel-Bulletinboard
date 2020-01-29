@@ -17,7 +17,7 @@
                 <textarea id="description" class="form-control" name="description" style="height:200px;resize:none;"
                   readonly>{{$posts['description']}}</textarea>
               </div>
-              <div class="col-md-6 text-center ml-5">
+              <div class="col-md-12 col-10 text-center ml-5">
                 <button type="submit" class="btn btn-primary mr-3">Create</button>
                 <button type="submit" class="btn btn-primary">Cancel</button>
               </div>

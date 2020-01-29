@@ -35,3 +35,6 @@ $(function () {
         $("#modal_updated_user").val($(e.relatedTarget).data('updated_user'));
     });
 });
+
+
+

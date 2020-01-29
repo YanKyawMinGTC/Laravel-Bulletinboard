@@ -31,7 +31,6 @@ class UserController extends Controller
         if (auth()->user()->type == 0) {
             $users = $this->userService->getUserList();
             if (count($users) > 0) {
-                // dd($users);
                 return view('user.userList', compact('users'));
             } elseif (count($users) == 0) {
                 return view('user.userList')->withMessage("No Users Found");

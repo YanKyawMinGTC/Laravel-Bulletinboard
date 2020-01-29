@@ -3,7 +3,7 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">User Profile</div> @if (Auth::user()->id == $user_prof['id']) <div
-          class="d-inline-flex justify-content-center mt-5 mb-5">
+          class="d-inline-flex justify-content-center mt-3 mb-3">
           <a href="{{ route('users.edit', Auth::user()->id) }}" class="text-center btn btn-primary">Edit</a>
         </div> @endif <div class="row">
           <div class="card-body col-md-8">
@@ -49,10 +49,10 @@
             </form>
           </div>
           <div class="form-group col-md-4">
-            <div class="mt-5">
+            <div class="mt-3 m-auto w-50">
             @if(!file_exists("/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}"))
               <img src="/profile_img/{{$user_prof->id}}/image/{{$user_prof->profile}}"
-                alt="{{$user_prof->profile}}" class="w-50">
+                alt="{{$user_prof->profile}}" class="w-100">
                 @else
                 <img src="/image/default_img.png" alt="default_img" class="w-50">
                   @endif

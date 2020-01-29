@@ -1,10 +1,10 @@
 @extends('layouts.app') @section('content') <div class="container">
   <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-12 col-sm-12">
       <div class="card">
         <div class="card-header">Update User Confirm</div>
         <div class="row">
-          <div class="card-body col-md-12">
+          <div class="card-body col-md-12 col-sm-12">
             <form method="POST" action="{{ route('users.update',$user_id) }}"> @csrf @method('PATCH') <div
                 class="form-group col-md-4">
                 <div class="mt-5"> @if(!file_exists(public_path()."/profile_img/{{$user_id}}/image/{{$file_name}}"))

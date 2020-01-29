@@ -6,4 +6,3 @@
     <p>@Copyright</p>
   </div>
 </div>
-</div>

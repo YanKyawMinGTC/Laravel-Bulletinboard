@@ -2,88 +2,92 @@
    <div class="title">
      <h2><a href="/users">User List</a></h2>
    </div>
-   <div class="row  mb-5">
-     <form action="/users/search" method="POST" role="search"> {{ csrf_field() }} <div class="input-group">
-         <div class="col-2">
+   <div class="row mb-5">
+     <form action="/users/search" method="POST" role="search"> {{ csrf_field() }} <div class="input-group row">
+         <div class="col-sm-6 col-12 col-md-2 mb-2">
            <input type="text" class="w-100 p-1" name="name" placeholder="Enter Name">
          </div>
-         <div class="col-2">
+         <div class="col-sm-6 col-12 col-md-2 mb-2">
            <input type="text" class="w-100 p-1" name="email" placeholder="Enter Email">
          </div>
-         <div class="col-2">
+         <div class="col-sm-6 col-12 col-md-2 mb-2">
            <input type="date" class="w-100 p-1" name="created_from" placeholder="Created From">
          </div>
-         <div class="col-2">
+         <div class="col-sm-6 col-12 col-md-2 mb-2">
            <input type="date" class="w-100 p-1" name="created_to" placeholder="Created To">
          </div>
-         <div class="col-2">
-           <button type="submit" class="btn btn-primary w-50 ml-5">Search</button>
+         <div class="col-sm-6 col-12 col-md-2 mb-2">
+           <button type="submit" class="btn btn-primary w-100">Search</button>
+         </div>
+         <div class="col-sm-6 col-12 col-md-2 mb-2">
+           <a href="/user/createUser" title="user create" class="btn btn-primary  w-100"> Add </a>
          </div>
      </form>
-     <div class="col-2">
-       <a href="/user/createUser" title="user create" class="btn btn-primary"> Add </a>
-     </div>
-   </div> @if(session('error')) <div class="alert alert-danger" role="alert"> {{ session('error')}} </div> @endif <table
-     class="table table-striped">
-     <thead>
-       <tr>
-         <th scope="col">ID</th>
-         <th scope="col">Name</th>
-         <th scope="col">Email</th>
-         <th scope="col">Created User</th>
-         <th scope="col">Phone</th>
-         <th scope="col">Birth Date</th>
-         <th scope="col">Creatd Date</th>
-         <th scope="col">Delete</th>
-       </tr>
-     </thead>
-     <tbody> @if(isset($users)) @if(isset($query))<p> The Search results for your query <b> {{ $query }} </b> are : </p>
-       @foreach($users as $user) <tr>
-         <td>{{$user->id}}</td>
-         <td>
-           <button type="button" class="btn btn-link" data-toggle="modal" data-id="{{ $user->id }}"
-             data-name="{{ $user->name }}" data-email="{{$user->email}}" data-phone="{{ $user->phone }}"
-             data-dob="{{date('Y/m/d', strtotime($user->dob))}}" data-address="{{$user->address}}"
-             data-created_at="{{$user->created_at}}" data-created_user="{{$user->created_user_name}}"
-             data-updated_at="{{$user->updated_at}}" data-updated_user="{{$user->updated_user}}"
-             data-target="#userModal">{{$user->name}}</button>
-         </td>
-         <td>{{$user->email}}</td>
-         <td>{{$user->created_user_name}}</td>
-         <td>{{$user->phone}}</td>
-         <td>{{date('Y/m/d', strtotime($user->dob))}}</td>
-         <td>{{date('Y/m/d', strtotime($user->created_at))}}</td>
-         <td>
-           <form method="post" action="{{ route('users.destroy', $user->id) }}"> @method('delete') @csrf <button
-               type="submit" onclick="return confirm('Are you sure?');" class="btn btn-danger btn-sm">Delete</button>
-           </form>
-         </td>
-       </tr> @endforeach @elseif(!isset($query)) @foreach($users as $user) <tr>
-         <td>{{$user->id}}</td>
-         <td>
-           <button type="button" class="btn btn-link" data-toggle="modal" data-id="{{ $user->id }}"
-             data-name="{{ $user->name }}" data-email="{{$user->email}}" data-phone="{{ $user->phone }}"
-             data-dob="{{date('Y/m/d', strtotime($user->dob))}}" data-address="{{$user->address}}"
-             data-created_at="{{$user->created_at}}" data-created_user="{{$user->created_user_name}}"
-             data-updated_at="{{$user->updated_at}}" data-updated_user="{{$user->updated_user}}"
-             data-target="#userModal">{{$user->name}}</button>
-         </td>
-         <td>{{$user->email}}</td>
-         <td>{{$user->created_user_name}}</td>
-         <td>{{$user->phone}}</td>
-         <td>{{date('Y/m/d', strtotime($user->dob))}}</td>
-         <td>{{date('Y/m/d', strtotime($user->created_at))}}</td>
-         <td>
-           <form method="post" action="{{ route('users.destroy', $user->id) }}"> @method('delete') @csrf <button
-               type="submit" onclick="return confirm('Are you sure?');" class="btn btn-danger btn-sm">Delete</button>
-           </form>
-         </td>
-       </tr> @endforeach @endif @else @if(isset($query)) <p> The Search results for your query <b> {{ $query }} </b> are
-         : <td colspan="7"> {{$message}}</td> @elseif(!isset($query)) <td colspan="7"> {{$message}}</td> @endif @endif
-     </tbody>
-   </table>
-   <!-- pagination -->
-   <ul class="pagination col-md-12 justify-content-center"> {{ $users->links() }} </ul>
+   </div> @if(session('error')) <div class="alert alert-danger" role="alert"> {{ session('error')}} </div> @endif <div
+     class="table-responsive text-nowrap">
+     <table class="table table-hover table-fixed">
+       <thead>
+         <tr>
+           <th scope="col">ID</th>
+           <th scope="col">Name</th>
+           <th scope="col">Email</th>
+           <th scope="col">Created User</th>
+           <th scope="col">Phone</th>
+           <th scope="col">Birth Date</th>
+           <th scope="col">Creatd Date</th>
+           <th scope="col">Delete</th>
+         </tr>
+       </thead>
+       <tbody> @if(isset($users)) @if(isset($query))<p> The Search results for your query <b> {{ $query }} </b> are :
+         </p> @foreach($users as $user) <tr>
+           <td>{{$user->id}}</td>
+           <td>
+             <button type="button" class="btn btn-link" data-toggle="modal" data-id="{{ $user->id }}"
+               data-name="{{ $user->name }}" data-email="{{$user->email}}" data-phone="{{ $user->phone }}"
+               data-dob="{{date('Y/m/d', strtotime($user->dob))}}" data-address="{{$user->address}}"
+               data-created_at="{{$user->created_at}}" data-created_user="{{$user->created_user_name}}"
+               data-updated_at="{{$user->updated_at}}" data-updated_user="{{$user->updated_user}}"
+               data-target="#userModal">{{$user->name}}</button>
+           </td>
+           <td>{{$user->email}}</td>
+           <td>{{$user->created_user_name}}</td>
+           <td>{{$user->phone}}</td>
+           <td>{{date('Y/m/d', strtotime($user->dob))}}</td>
+           <td>{{date('Y/m/d', strtotime($user->created_at))}}</td>
+           <td>
+             <form method="post" action="{{ route('users.destroy', $user->id) }}"> @method('delete') @csrf <button
+                 type="submit" onclick="return confirm('Are you sure?');" class="btn btn-danger btn-sm">Delete</button>
+             </form>
+           </td>
+         </tr> @endforeach @elseif(!isset($query)) @foreach($users as $user) <tr>
+           <td>{{$user->id}}</td>
+           <td>
+             <button type="button" class="btn btn-link" data-toggle="modal" data-id="{{ $user->id }}"
+               data-name="{{ $user->name }}" data-email="{{$user->email}}" data-phone="{{ $user->phone }}"
+               data-dob="{{date('Y/m/d', strtotime($user->dob))}}" data-address="{{$user->address}}"
+               data-created_at="{{$user->created_at}}" data-created_user="{{$user->created_user_name}}"
+               data-updated_at="{{$user->updated_at}}" data-updated_user="{{$user->updated_user}}"
+               data-target="#userModal">{{$user->name}}</button>
+           </td>
+           <td>{{$user->email}}</td>
+           <td>{{$user->created_user_name}}</td>
+           <td>{{$user->phone}}</td>
+           <td>{{date('Y/m/d', strtotime($user->dob))}}</td>
+           <td>{{date('Y/m/d', strtotime($user->created_at))}}</td>
+           <td>
+             <form method="post" action="{{ route('users.destroy', $user->id) }}"> @method('delete') @csrf <button
+                 type="submit" onclick="return confirm('Are you sure?');" class="btn btn-danger btn-sm">Delete</button>
+             </form>
+           </td>
+         </tr> @endforeach @endif @else @if(isset($query)) <p> The Search results for your query <b> {{ $query }} </b>
+           are : <td colspan="7"> {{$message}}</td> @elseif(!isset($query)) <td colspan="7"> {{$message}}</td> @endif
+           @endif </tbody>
+     </table>
+   </div>
+   pagination -->
+  <ul class="pagination col-md-12 justify-content-center">
+
+   </ul>
  </div> @endsection <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
    <div class="modal-dialog" role="document">
      <div class="modal-content">
