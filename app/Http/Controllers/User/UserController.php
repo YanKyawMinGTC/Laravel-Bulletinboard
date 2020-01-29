@@ -28,11 +28,16 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->userService->getUserList();
-        if (count($users) > 0) {
-            return view('user.userList')->with('users', $users);
-        } elseif (count($users) == 0) {
-            return view('user.userList')->withMessage("No Users Found");
+        if (auth()->user()->type == 0) {
+            $users = $this->userService->getUserList();
+            if (count($users) > 0) {
+                // dd($users);
+                return view('user.userList', compact('users'));
+            } elseif (count($users) == 0) {
+                return view('user.userList')->withMessage("No Users Found");
+            }
+        } else {
+            return redirect('/posts');
         }
     }
     /**
@@ -239,7 +244,7 @@ class UserController extends Controller
         if ($name == "" && $email == "" && $created_from == "" && $created_to == "") {
             return view('user/userList')->withQuery($name)->withMessage("Enter Search Key");
         } else {
-           $search_value = $this->userService->searchUser($name, $email, $created_from, $created_to);
+            $search_value = $this->userService->searchUser($name, $email, $created_from, $created_to);
             return view('user/userList')->with("users", $search_value)->withQuery($name);
         }
     }

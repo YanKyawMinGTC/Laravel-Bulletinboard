@@ -28,7 +28,7 @@ class UserDao implements UserDaoInterface
             'u1.name as created_user_name')
             ->join('users as u1', 'u1.id', 'users.create_user_id')
             ->orderBy('users.updated_at', 'DESC')
-            ->paginate(50);
+            ->paginate(10);
         return $users;
     }
     public function store($auth_id, $user_new)

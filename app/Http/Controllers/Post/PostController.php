@@ -94,7 +94,7 @@ class PostController extends Controller
             if (auth()->user()->id !== $post->create_user_id) {
                 return redirect('/posts')->with('error', 'Unauthorized Page');
             } else {
-                return view("post.update_post")->with('post', $post);
+                return view("post.updatePost")->with('post', $post);
             }
         } else {
             return redirect('/posts')->with('error', 'Unauthorized Page');
@@ -152,7 +152,7 @@ class PostController extends Controller
             "description" => "required|min:3|max:255",
             "status" => "",
         ]);
-        return view('post.update_post_confirm')->with("posts", $validate_post)->with("post_id", $post_id);
+        return view('post.updatePostConfirm')->with("posts", $validate_post)->with("post_id", $post_id);
     }
     public function import(Request $request)
     {
