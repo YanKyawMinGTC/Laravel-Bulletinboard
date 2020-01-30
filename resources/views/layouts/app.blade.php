@@ -23,11 +23,20 @@
 </head>
 <body>
     <div id="app">
+        <div class="loader">
+    <img src="/image/loading01.gif" alt="Loading..." />
+</div>
     @include('layouts.header')
         <main class="py-4">
             @yield('content')
         </main>
         @include('layouts.footer')
     </div>
+    <script>
+    window.addEventListener("load", function () {
+    const loader = document.querySelector(".loader");
+    loader.className += " hidden"; // class "loader hidden"
+});
+    </script>
 </body>
 </html>

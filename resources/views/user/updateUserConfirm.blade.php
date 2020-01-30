@@ -6,13 +6,11 @@
         <div class="row">
           <div class="card-body col-md-12 col-sm-12">
             <form method="POST" action="{{ route('users.update',$user_id) }}"> @csrf @method('PATCH') <div
-                class="form-group col-md-4">
-                <div class="mt-5"> @if(!file_exists(public_path()."/profile_img/{{$user_id}}/image/{{$file_name}}"))
-                  <input type="text" name="profile" value="{{$file_name}}" hidden>
-                  <img src="/profile_img/{{$user_id}}/image/{{$file_name}}" alt="{{$file_name}}" class="w-50"> @else
-                  <input type="text" name="profile" value="{{$file_name}}" hidden>
-                  <img src="/image/default_img.png" alt="default_img" class="w-50"> @endif </div>
-              </div>
+                class="w-25 m-auto"> @if(!file_exists(public_path()."/profile_img/{{$user_id}}/image/{{$file_name}}"))
+                <input type="text" name="profile" value="{{$file_name}}" hidden>
+                <img src="/profile_img/{{$user_id}}/image/{{$file_name}}" alt="{{$file_name}}" class="w-100 m-auto">
+                @else <input type="text" name="profile" value="{{$file_name}}" hidden>
+                <img src="/image/default_img.png" alt="default_img" class="w-100 m-auto"> @endif </div>
               <div class="form-group row">
                 <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
                 <div class="col-md-6">
@@ -57,7 +55,7 @@
               <div class="form-group row mb-0 ">
                 <div class="col-md-6 mx-auto">
                   <button type="submit" class="btn btn-primary mr-3">Update</button>
-                  <button type="reset" class="btn btn-primary">Cancel</button>
+                  <a href="{{ route('users.edit', Auth::user()->id)}}" class="btn btn-primary">Cancel</a>
                 </div>
               </div>
             </form>

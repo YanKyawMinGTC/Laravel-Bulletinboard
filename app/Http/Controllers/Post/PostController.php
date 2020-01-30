@@ -30,9 +30,7 @@ class PostController extends Controller
     {
         $auth_id = auth()->user()->id;
         $user_type = auth()->user()->type;
-
         $posts = $this->postService->getPost($auth_id, $user_type);
-
         if (count($posts) > 0) {
             return view('post.postList', compact('posts'));
         } elseif (count($posts) == 0) {
@@ -86,17 +84,12 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = $this->postService->edit($id);
-        if (auth()->user()->type == 0) {
-            if (auth()->user()->id !== $post->create_user_id) {
-                return redirect('/posts')->with('error', 'Unauthorized Page');
-            } else {
-                return view("post.updatePost")->with('post', $post);
-            }
+        if (auth()->user()->id !== $post->create_user_id) {
+            return redirect('/posts')->with('success','Posted User is no allowed!');
         } else {
-            return redirect('/posts')->with('error', 'Unauthorized Page');
+            return view("post.updatePost")->with('post', $post);
         }
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -157,14 +150,15 @@ class PostController extends Controller
         ]);
         $file = $request->file('file');
 
-        
         $extension = $file->getClientOriginalExtension();
+
         if ($extension != 'csv') {
             return redirect()->back()->withInvalid('The file must be a file of type: csv.');
         }
         $fileName = $file->getClientOriginalName();
-        $file->move("upload/" . $auth_id, $fileName);
-        $filepath = public_path() . '/upload/' . $fileName;
+        $save_path = public_path('/upload/' . $auth_id . '/');
+        $file->move($save_path, $fileName);
+        $filepath = public_path() . '/upload/' . $auth_id . '/' . $fileName;
         $import_csv_file = $this->postService->import($auth_id, $filepath);
         return redirect()->intended('posts')->withSuccess('Csv file upload successfully.');
     }

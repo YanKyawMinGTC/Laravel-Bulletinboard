@@ -7,7 +7,7 @@
           <a href="{{ route('users.edit', Auth::user()->id) }}" class="text-center btn btn-primary">Edit</a>
         </div> @endif <div class="row">
           <div class="card-body col-md-8">
-            <form method="POST" action="{{ route('register') }}"> @csrf <div class="form-group row">
+            <form method="POST" action=""> @csrf <div class="form-group row">
                 <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
                 <div class="col-md-6">
                   <input id="name" type="text" class="form-control " name="name" value="{{$user_prof['name']}}"

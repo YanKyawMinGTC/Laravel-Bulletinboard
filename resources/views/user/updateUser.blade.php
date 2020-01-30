@@ -72,16 +72,19 @@
                   src="/profile_img/{{$users->id}}/image/{{$users->profile}}" class="default_img"
                   alt="{{$users->profile}}" width="200"> @else <img src="/image/default_img.png" class="default_img"
                   alt="default_img.png" width="200"> @endif </div>
-              <div class="d-flex justify-content-start mb-5 ml-5 mt-3 ">
-                <a href="/user/changePassword">Change Password</a>
+              <div class="form-group row">
+                  <p>{{$users['id']}}</p>
+    @if(Auth::user()->id == $users['id'])
+                 <a class="col-md-4 col-form-label text-md-right ml-3" href="/changePwd/{{$users['id']}}">Change Password</a>
+    @endif
               </div>
-              <div class="col-md-6 col-10 m-auto ">
+              <div class="col-md-6 col-10 m-auto">
                 <button type="submit" class="btn btn-primary mr-3">Confirm</button>
                 <button type="reset" class="btn btn-primary" onclick="resetimg()">Clear</button>
               </div>
             </form>
           </div>
-          <div class="form-group col-md-4 col-10">
+          <div class="form-group col-md-2 col-10">
             <div class="mt-5 mr-5 w-100">
               @if(!file_exists(public_path()."/profile_img/{{$users->id}}/image/{{$users->profile}}")) <img
                 src="/profile_img/{{$users->id}}/image/{{$users->profile}}" class="default_img"

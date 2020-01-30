@@ -229,5 +229,10 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
+        'db_fields' => [
+        'first_name',
+        'last_name',
+        'email'
+    ]
 
 ];

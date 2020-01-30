@@ -14,10 +14,10 @@ class PostDao implements PostDaoInterface
     {
         if ($user_type == 1) {
             $user = User::find($auth_id);
-            $posts = $user->post()->paginate(10);
+            $posts = $user->post()->Orderby("created_at", "DESC")->paginate(10);
 
         } elseif ($user_type == 0) {
-            $posts = Post::paginate(10);
+            $posts = Post::Orderby("created_at", "DESC")->paginate(10);
         }
         return $posts;
     }

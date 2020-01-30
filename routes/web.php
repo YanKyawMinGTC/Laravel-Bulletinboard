@@ -19,7 +19,7 @@ Route::get('/user/createUser', function () {
 Route::get('/post/createPost', function () {
     return view('post/createPost');
 });
-Route::get('/user/changePassword', function () {
+Route::get('/changePwd/{id}', function () {
     return view('user/changePassword');
 });
 Route::get('/post/uploadCsv', function () {
@@ -38,6 +38,12 @@ Route::resource("posts", "Post\PostController");
 
 Route::post("users/confirm_update", "User\UserController@confirm_update")->name('users.confirm_update');
 Route::post("users/confirm_create", "User\UserController@confirm_create")->name('users.confirm_create');
-Route::post("users/password", "User\UserController@change_pass")->name('users.password');
+
 Route::post("users/search", "User\UserController@search");
 Route::resource("users", "User\UserController");
+
+Route::put('/changePwd/{id}', 'User\UserController@change_pass');
+
+Route::get('/import', 'Post\ImportController@getImport')->name('import');
+Route::post('/import_parse', 'Post\ImportController@parseImport')->name('import_parse');
+Route::post('/import_process', 'Post\ImportController@processImport')->name('import_process');
