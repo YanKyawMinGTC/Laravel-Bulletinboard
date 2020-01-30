@@ -21,10 +21,6 @@ class PostController extends Controller
         $this->middleware('auth');
         $this->postService = $post;
     }
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
     /**
      * Display a listing of the resource.
      *
@@ -34,14 +30,14 @@ class PostController extends Controller
     {
         $auth_id = auth()->user()->id;
         $user_type = auth()->user()->type;
+
         $posts = $this->postService->getPost($auth_id, $user_type);
 
         if (count($posts) > 0) {
-            return view('post.postList')->with('posts', $posts);
+            return view('post.postList', compact('posts'));
         } elseif (count($posts) == 0) {
             return view('post.postList')->withMessage("No Post Found");
         }
-
     }
     /**
      * Show the form for creating a new resource.
@@ -110,7 +106,6 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         $post_update = new Post;
         $post_update->id = $id;
         $post_update->title = $request['title'];
@@ -161,6 +156,8 @@ class PostController extends Controller
             'file' => 'required|max:2048',
         ]);
         $file = $request->file('file');
+
+        
         $extension = $file->getClientOriginalExtension();
         if ($extension != 'csv') {
             return redirect()->back()->withInvalid('The file must be a file of type: csv.');

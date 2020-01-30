@@ -14,9 +14,10 @@ class PostDao implements PostDaoInterface
     {
         if ($user_type == 1) {
             $user = User::find($auth_id);
-            $posts = $user->post()->get();
+            $posts = $user->post()->paginate(10);
+
         } elseif ($user_type == 0) {
-            $posts = Post::all();
+            $posts = Post::paginate(10);
         }
         return $posts;
     }
@@ -85,7 +86,7 @@ class PostDao implements PostDaoInterface
                     $query->where('name', 'like', '%' . $search_keyword . '%');
                 })
                 ->latest()
-                ->paginate(10)
+
                 ->withPath('?search=' . $search_keyword);
             return $posts;
         } elseif ($user_type == 1) {

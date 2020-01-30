@@ -25,9 +25,10 @@ Route::get('/user/changePassword', function () {
 Route::get('/post/uploadCsv', function () {
     return view('post/uploadCsv');
 });
+// login ,logout, register off
+Auth::routes(['register' => false, 'verify' => false]);
 
-Auth::routes();
-
+//
 Route::post("posts/confirm_update", "Post\PostController@confirm_update")->name('posts.confirm_update');
 Route::post("posts/confirm_create", "Post\PostController@confirm_create")->name('posts.confirm_create');
 Route::post("posts/import", "Post\PostController@import")->name('posts.import');

@@ -1,11 +1,11 @@
             <nav class="navbar navbar-expand-md  bg-primary shadow-sm">
               <div class="container">
-                <h1 class="card-title mr-3 text-warning mt-3">SCM BULLETIN BOARD</h1> @if(Auth::user()->type==0) <div
-                  class="row">
-                  <a class="btn btn-primary mr-3 " href="{{ route('users.index') }}">Users List</a> @endif <a
-                    class=" btn btn-primary mr-3"
+                <h1 class="card-title text-warning mt-3 mr-3 m-auto">SCM BULLETIN BOARD</h1> @if(Auth::user()->type==0)
+                <div class="row m-auto">
+                  <a class="btn btn-primary  col-md-4" href="{{ route('users.index') }}">Users List</a> @endif <a
+                    class=" btn btn-primary col-md-4"
                     href="{{ route('users.show', Auth::user()->id) }}">{{Auth::user()->name}}'s Profile</a>
-                  <a class=" btn btn-primary" href="{{ route('posts.index') }}">Posts List</a>
+                  <a class=" btn btn-primary col-md-4" href="{{ route('posts.index') }}">Posts List</a>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav ml-auto">

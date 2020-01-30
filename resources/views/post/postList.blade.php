@@ -8,7 +8,7 @@
   <div class="row mb-5">
     <div class="col-sm-12 col-12 col-md-6 mb-2">
       <form action="/posts/search" method="POST" role="search"> {{ csrf_field() }} <div class="input-group row">
-          <input type="text" class="form-control col-8 col-md-8 col-sm-8" name="search_keyword"
+          <input type="text" class="form-control col-8 col-md-8 col-sm-8 ml-3" name="search_keyword"
             placeholder="Search Post">
           <span class="input-group-btn col-4 col-md-4 col-sm-4">
             <button type="submit" class="btn btn-primary w-100">
@@ -85,6 +85,7 @@
             <td colspan="6"> {{$message}}</td> @elseif(!isset($query)) <td colspan="7"> {{$message}}</td>
           </tr> @endif @endif </tbody>
     </table>
+    <ul class="pagination col-md-12 justify-content-center"> {{ $posts->links() }} </ul>
   </div>
 </div> @endsection <div class="modal fade" id="favoritesModal" tabindex="-1" role="dialog"
   aria-labelledby="favoritesModalLabel">
