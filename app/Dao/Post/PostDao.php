@@ -86,8 +86,7 @@ class PostDao implements PostDaoInterface
                     $query->where('name', 'like', '%' . $search_keyword . '%');
                 })
                 ->latest()
-
-                ->withPath('?search=' . $search_keyword);
+                ->paginate(10);
             return $posts;
         } elseif ($user_type == 1) {
             $user = Post::where('create_user_id', 'LIKE', '%' . $user_id . '%')->where('title', 'LIKE', '%' . $search_keyword . '%')->orWhere('description', 'LIKE', '%' . $search_keyword . '%')->paginate(20);

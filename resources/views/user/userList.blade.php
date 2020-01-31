@@ -20,7 +20,7 @@
            <button type="submit" class="form-control btn btn-primary w-100">Search</button>
          </div>
          <div class="col-sm-6 col-12 col-md-2 mb-2">
-           <a href="/user/createUser" title="user create" class="form-control btn btn-primary  w-100"> Add </a>
+           <a href="/user/createUser" title="user create" class="form-control btn btn-primary w-100"> Add </a>
          </div>
      </form>
    </div> @if(session('error')) <div class="alert alert-danger" role="alert"> {{ session('error')}} </div> @endif <div
@@ -29,7 +29,6 @@
        <table class="table table-hover table-fixed">
          <thead>
            <tr>
-             <th scope="col">ID</th>
              <th scope="col">Name</th>
              <th scope="col">Email</th>
              <th scope="col">Created User</th>
@@ -41,7 +40,6 @@
          </thead>
          <tbody> @if(isset($users)) @if(isset($query))<p> The Search results for your query <b> {{ $query }} </b> are :
            </p> @foreach($users as $user) <tr>
-             <td>{{$user->id}}</td>
              <td>
                <button type="button" class="btn btn-link" data-toggle="modal" data-id="{{ $user->id }}"
                  data-name="{{ $user->name }}" data-email="{{$user->email}}" data-phone="{{ $user->phone }}"
@@ -62,13 +60,12 @@
                </form>
              </td>
            </tr> @endforeach @elseif(!isset($query)) @foreach($users as $user) <tr>
-             <td>{{$user->id}}</td>
              <td>
                <button type="button" class="btn btn-link" data-toggle="modal" data-id="{{ $user->id }}"
                  data-name="{{ $user->name }}" data-email="{{$user->email}}" data-phone="{{ $user->phone }}"
                  data-dob="{{date('Y/m/d', strtotime($user->dob))}}" data-address="{{$user->address}}"
                  data-created_at="{{$user->created_at}}" data-created_user="{{$user->created_user_name}}"
-                 data-updated_at="{{$user->updated_at}}" data-updated_user="{{$user->updated_user}}"
+                 data-updated_at="{{$user->updated_at}}" data-updated_user="{{$user->updated_user_name}}"
                  data-target="#userModal">{{$user->name}}</button>
              </td>
              <td>{{$user->email}}</td>
@@ -87,8 +84,7 @@
              @endif </tbody>
        </table>
      </div>
-   </div>
-   <ul class="pagination col-md-12 justify-content-center"> {{ $users->links()}} </ul>
+   </div> @if(isset($users)) <ul class="pagination col-md-12 justify-content-center"> {{ $users->links()}} </ul> @endif
  </div> @endsection <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel">
    <div class="modal-dialog" role="document">
      <div class="modal-content">

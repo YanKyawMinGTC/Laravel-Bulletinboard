@@ -1,5 +1,8 @@
-@extends('layouts.app') @section('content') <div class="container"> @if($message = Session::get('success')) <div
-    class="alert alert-success alert-block">
+@extends('layouts.app') @section('content') <div class="container"> @if(Session::has('changePass-notallowed')) <div
+    class="alert alert-warning alert-block">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>{{ Session::get('changePass-notallowed') }}</strong>
+  </div> @endif @if($message = Session::get('success')) <div class="alert alert-success alert-block">
     <button type="button" class="close" data-dismiss="alert">×</button>
     <strong>{{ $message }}</strong>
   </div> @endif <div class="title">
@@ -34,7 +37,6 @@
     <table class="table table-striped main-table">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Post Title</th>
           <th colspan="3">Post Description</th>
           <th>Posted User</th>
@@ -43,9 +45,8 @@
           <th></th>
         </tr>
       </thead>
-      <tbody>@if(isset($posts)) @if(isset($query))<p> The Search results for your query <b> {{ $query }} </b> are : </p>
+      <tbody> @if(isset($posts)) @if(isset($query))<p> The Search results for your query <b> {{ $query }} </b> are :</p>
         @foreach($posts as $po) <tr>
-          <td>{{$po->id}}</td>
           <td>
             <button type="button" class="btn btn-link" data-toggle="modal" data-id="{{ $po->id }}"
               data-title="{{ $po->title }}" data-desc="{{$po->description}}" data-status="{{ $po->status }}"
@@ -63,7 +64,6 @@
             </form>
           </td>
         </tr> @endforeach @elseif(!isset($query)) @foreach($posts as $po) <tr>
-          <td>{{$po->id}}</td>
           <td>
             <button type="button" class="btn btn-link" data-toggle="modal" data-id="{{ $po->id }}"
               data-title="{{ $po->title }}" data-desc="{{$po->description}}" @if($po->status==0) data-status="Inactive"
@@ -84,9 +84,9 @@
           are : <tr>
             <td colspan="6"> {{$message}}</td> @elseif(!isset($query)) <td colspan="7"> {{$message}}</td>
           </tr> @endif @endif </tbody>
-    </table>
-    <ul class="pagination col-md-12 justify-content-center"> {{ $posts->links() }} </ul>
-  </div>
+    </table> @if(isset($posts)) <ul class="pagination col-md-12 justify-content-center"> {{ $posts->links() }} </ul>
+    @endif
+  </div> @if(!isset($posts)) {{"No post found"}} @endif
 </div> @endsection <div class="modal fade" id="favoritesModal" tabindex="-1" role="dialog"
   aria-labelledby="favoritesModalLabel">
   <div class="modal-dialog" role="document">

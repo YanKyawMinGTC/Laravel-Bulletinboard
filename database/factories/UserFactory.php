@@ -19,16 +19,16 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'name' => "admin",
-        'email' => 'admin@gmail.com',
-        'password' => '$2y$12$QbDu1X.nhAzO1M2ynNtW3uyjkuPSi09VijhQUkGGgbcvpm87U/1ju', // password
-        'type' => 0, //0 for admin and 1 for user
+        'name' => "uuu1",
+        'email' => 'uuu1@gmail.com', //$2y$12$QbDu1X.nhAzO1M2ynNtW3uyjkuPSi09VijhQUkGGgbcvpm87U/1ju
+        'password' => '$2y$12$QbDu1X.nhAzO1M2ynNtW3uyjkuPSi09VijhQUkGGgbcvpm87U/1ju', // password 12345678
+        'type' => 1, //0 for admin and 1 for user
         'phone' => $faker->phoneNumber,
         'dob' => $faker->date,
         'address' => $faker->address,
         'profile' => Str::random(10) . '.jpg',
-        'create_user_id' => 1,
-        'updated_user_id' => 1,
+        'create_user_id' => 2,
+        'updated_user_id' => 2,
         'created_at' => now(),
     ];
 });

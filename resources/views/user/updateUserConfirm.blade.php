@@ -55,7 +55,7 @@
               <div class="form-group row mb-0 ">
                 <div class="col-md-6 mx-auto">
                   <button type="submit" class="btn btn-primary mr-3">Update</button>
-                  <a href="{{ route('users.edit', Auth::user()->id)}}" class="btn btn-primary">Cancel</a>
+                  <a href="{{ URL::previous() }}" class="btn btn-primary">Cancel</a>
                 </div>
               </div>
             </form>

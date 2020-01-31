@@ -1,14 +1,20 @@
-@extends('layouts.app') @section('content') <div class="container"> @if(count($errors) > 0) <div
-    class="alert alert-danger"> Upload Validation Error<br><br>
-    <ul> @foreach($errors->all() as $error) <li>{{ $error }}</li> @endforeach </ul>
-  </div> @endif @if(session('success')) <div class="alert alert-success" role="alert">
-    <a href="#" class="close" data-dismiss="alert" arial-label="close">&times;</a><strong>SUCCESS</strong> &nbsp;
-    {{ session()->get('message')}}</div> @endif <div class="row justify-content-center">
+@extends('layouts.app') @section('content') <div class="container"> @if(Session::has('pass-notmatch')) <div
+    class="alert alert-warning alert-block">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>{{ Session::get('pass-notmatch') }}</strong>
+  </div> @endif @if(Session::has('pass-same')) <div class="alert alert-warning alert-block">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>{{ Session::get('pass-same') }}</strong>
+  </div> @endif @if($message = Session::get('success')) <div class="alert alert-success alert-block">
+    <button type="button" class="close" data-dismiss="alert">×</button>
+    <strong>{{ $message }}</strong>
+  </div> @endif <div class="row justify-content-center">
     <div class="col-md-8">
       <div class="card">
         <div class="card-header">Change Password</div>
         <div class="card-body">
-          <form method="put" action="/changePwd/{{auth()->user()->id}}"> @csrf <div class="form-group row">
+          <form method="POST" action="{{ route('users.changePass',Auth::user()->id) }}"> @csrf<div
+              class="form-group row">
               <label for="oldpassword" class="col-md-4 col-form-label text-md-right">Old Password</label>
               <div class="col-md-6">
                 <input id="oldpassword" type="password" class="form-control @error('old_password') is-invalid @enderror"
@@ -16,7 +22,7 @@
                 @error('old_password') <span class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span> @enderror </div>
-                 <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
+              <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
             </div>
             <div class="form-group row">
               <label for="new_password" class="col-md-4 col-form-label text-md-right">New Password</label>
@@ -27,14 +33,14 @@
                   class="invalid-feedback" role="alert">
                   <strong>{{ $message }}</strong>
                 </span> @enderror </div>
-                 <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
+              <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
             </div>
             <div class="form-group row">
-              <label for="confirm-password" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
+              <label for="new_confirm_password" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
               <div class="col-md-6">
-                <input id="confirm-password" type="password" class="form-control" name="password_confirmation"
-                  autocomplete="new-password"></div>
-                   <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
+                <input id="new_confirm_password" type="password" class="form-control" name="new_confirm_password"
+                  autocomplete="new_confirm_password"></div>
+              <label class="col-md-1 col-form-label text-md-left text-danger">*</label>
             </div>
             <div class="form-group row mb-0 ">
               <div class="col-md-6 mx-auto">

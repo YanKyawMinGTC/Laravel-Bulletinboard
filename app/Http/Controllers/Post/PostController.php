@@ -31,9 +31,12 @@ class PostController extends Controller
         $auth_id = auth()->user()->id;
         $user_type = auth()->user()->type;
         $posts = $this->postService->getPost($auth_id, $user_type);
+        // dd($posts);
         if (count($posts) > 0) {
-            return view('post.postList', compact('posts'));
+            // dd("post has");
+            return view('post.postList')->with('posts', $posts);
         } elseif (count($posts) == 0) {
+            // dd("hello ");
             return view('post.postList')->withMessage("No Post Found");
         }
     }
@@ -85,7 +88,7 @@ class PostController extends Controller
     {
         $post = $this->postService->edit($id);
         if (auth()->user()->id !== $post->create_user_id) {
-            return redirect('/posts')->with('success','Posted User is no allowed!');
+            return redirect('/posts')->with('success', 'Posted User is no allowed!');
         } else {
             return view("post.updatePost")->with('post', $post);
         }

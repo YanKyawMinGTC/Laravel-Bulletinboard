@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Post;
+// use App\Notifications\UserResetPassword;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -40,4 +41,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class, 'create_user_id');
     }
+    // public function sendPasswordResetNotification($token)
+    // {
+    //     $this->notify(new UserResetPassword($token));
+    // }
+
 }

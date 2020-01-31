@@ -38,8 +38,8 @@
               </div>
             </div>
             <div class="col-md-6 text-center ml-5">
-              <button type="submit" class="btn btn-primary mr-3">Create</button>
-              <button type="reset" class="btn btn-primary">Cancel</button>
+              <button type="submit" class="btn btn-primary mr-3">Update</button>
+              <a class="btn btn-primary" href="{{ URL::previous() }}">Cancel</a>
             </div>
           </form>
         </div>

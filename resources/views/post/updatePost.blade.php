@@ -27,7 +27,6 @@
             <div class="form-group row">
               <label for="status" class="col-md-4 col-form-label text-md-right">Status</label>
               <div class="col-md-6 ">
-
                 @if($post->status==1)
                 <label class="switch">
                   <input type="checkbox" checked readonly name="status" >
@@ -42,8 +41,8 @@
               </div>
             </div>
             <div class="col-md-6 text-center ml-5">
-              <button type="submit" class="btn btn-primary mr-3">Create</button>
-              <button type="reset" class="btn btn-primary">Cancel</button>
+              <button type="submit" class="btn btn-primary mr-3">Update</button>
+              <button type="reset" class="btn btn-primary">Clear</button>
             </div>
           </form>
         </div>

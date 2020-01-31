@@ -75,7 +75,7 @@
               <div class="form-group row">
                   <p>{{$users['id']}}</p>
     @if(Auth::user()->id == $users['id'])
-                 <a class="col-md-4 col-form-label text-md-right ml-3" href="/changePwd/{{$users['id']}}">Change Password</a>
+                 <a class="col-md-4 col-form-label text-md-right ml-3" href="{{ route('users.showchangePass',$users['id'])}}">Change Password</a>
     @endif
               </div>
               <div class="col-md-6 col-10 m-auto">
@@ -84,7 +84,7 @@
               </div>
             </form>
           </div>
-          <div class="form-group col-md-2 col-10">
+          <div class="form-group col-md-2 col-10 d-sm-none d-none d-md-block">
             <div class="mt-5 mr-5 w-100">
               @if(!file_exists(public_path()."/profile_img/{{$users->id}}/image/{{$users->profile}}")) <img
                 src="/profile_img/{{$users->id}}/image/{{$users->profile}}" class="default_img"

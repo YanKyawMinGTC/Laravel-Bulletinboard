@@ -216,22 +216,31 @@ class UserController extends Controller
             dd("Profile not found");
         }
     }
-    public function change_pass(Request $request)
+    public function showchangePass($id)
     {
-        $request->validate([
-            "old_password" => ['required'],
-            "new_password" => ['required', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])/', 'confirmed'],
-        ]);
+        if(auth()->user()->id == $id){
+            return view('user.changePassword');
+        }else{
+           return redirect('/posts')->with('changePass-notallowed','Change Password not supported for another user!');
 
-        if (!(Hash::check($request->get("old_password"), Auth::user()->password))) {
-            return back()->with('error', "Your current Password doesn't match");
         }
+    }
+    public function changePass(Request $request)
+    {
+        if (!(Hash::check($request->get("old_password"), Auth::user()->password))) {
+            return back()->with('pass-notmatch', "Your Old Password doesn't match");
+        }
+        $request->validate([
+    "old_password" => ['required'],
+    "new_password" => ['required', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])/'],
+     'new_confirm_password' => ['same:new_password'],
+]);
         if (strcmp($request->get("old_password"), $request->get("new_password")) == 0) {
-            return back()->with('error', "Your current Password cannot be the same with the new password");
+            return back()->with('pass-same', "Your current Password cannot be the same with the new password");
         }
         $user_new_pass = $request['new_password'];
         $user = $this->userService->changePassword($user_new_pass);
-        return back()->with("message", "Password changed successfully");
+        return redirect('/posts')->withSuccess("Password changed successfully");
     }
 
     public function search(Request $request)

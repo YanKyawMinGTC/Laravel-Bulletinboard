@@ -2,6 +2,10 @@ h1 {
     color: #8a2be2;
 }
 
+nav>a:hover {
+    text-decoration: none!important;
+}
+
 .switch {
     position: relative;
     display: inline-block;

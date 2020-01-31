@@ -25,8 +25,11 @@ class UserDao implements UserDaoInterface
             'users.created_at',
             'users.updated_at',
             'users.id',
-            'u1.name as created_user_name')
-            ->join('users as u1', 'u1.id', 'users.create_user_id')
+            'user_table1.name as created_user_name',
+            'user_table2.name as updated_user_name'
+        )
+            ->join('users as user_table1', 'user_table1.id', 'users.create_user_id')
+            ->join('users as user_table2', 'user_table2.id', 'users.updated_user_id')
             ->orderBy('users.updated_at', 'DESC')
             ->paginate(10);
         return $users;
@@ -66,6 +69,7 @@ class UserDao implements UserDaoInterface
         $user->updated_user_id = auth()->user()->id;
         $user->updated_at = now();
         $user->save();
+
         return $user;
     }
     public function delete($id)
@@ -75,12 +79,13 @@ class UserDao implements UserDaoInterface
         $user->save();
         $user->delete();
         return $user;
-
     }
     public function changePassword($user_new_pass)
     {
         $user = Auth::user();
         $user->password = bcrypt($user_new_pass);
+        $user->updated_user_id = Auth::user()->id;
+        $user->updated_at = now();
         $user->save();
     }
     public function searchUser($name, $email, $created_from, $created_to)
@@ -97,7 +102,7 @@ class UserDao implements UserDaoInterface
             })
             ->when($created_to, function ($query) use ($created_to) {
                 $query->orWhere('created_at', '<=', $created_to);
-            })->get();
+            })->paginate(10);
         return $search_value;
     }
 }
